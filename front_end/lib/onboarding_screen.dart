@@ -32,18 +32,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
       );
-    } else {
-      _navigateToLogin();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isSmallScreen = size.height < 600;
+
     return Scaffold(
       body: Stack(
         children: [
           GestureDetector(
-            onTap: _nextPage, // Fitur tap layar untuk pindah halaman
+            onTap: () {
+              if (_currentPage < 2) {
+                _nextPage();
+              }
+            },
             child: PageView(
               controller: _pageController,
               onPageChanged: (int page) {
@@ -68,27 +73,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   title: 'Enable Your Location',
                   description:
                       'Choose your location to start finding the request around you',
-                  buttonLabel: 'Use My Location',
-                  extraButton: ElevatedButton(
-                    onPressed: () {
-                      _navigateToLogin();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[300],
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50), // Sesuai mockup
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 20),
-                      child: Text(
-                        'Skip for now',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  buttonLabel: 'USE MY LOCATION', 
+                  extraButton: GestureDetector(
+                    onTap: _navigateToLogin,
+                    child: Text(
+                      'Skip For Now',
+                      style: GoogleFonts.poppins(
+                        fontSize: isSmallScreen ? 13 : 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600],
                       ),
                     ),
                   ),
@@ -96,10 +89,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ],
             ),
           ),
-          // Tombol Skip (tidak muncul di halaman ketiga)
           if (_currentPage < 2)
             Positioned(
-              bottom: 90,
+              bottom: isSmallScreen ? 110 : 130,
               left: 0,
               right: 0,
               child: GestureDetector(
@@ -108,7 +100,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: Text(
                     'Skip',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: isSmallScreen ? 14 : 16,
                       fontWeight: FontWeight.w500,
                       color: Colors.grey[600],
                     ),
@@ -116,9 +108,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
             ),
-          // Indikator halaman (dots)
           Positioned(
-            bottom: 60,
+            bottom: isSmallScreen ? 80 : 90,
             left: 0,
             right: 0,
             child: Row(
@@ -126,12 +117,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: List.generate(3, (index) {
                 return Container(
                   margin: const EdgeInsets.symmetric(horizontal: 4),
-                  width: 12,
-                  height: 12,
+                  width: isSmallScreen ? 10 : 12,
+                  height: isSmallScreen ? 10 : 12,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _currentPage == index
-                        ? Colors.amber
+                        ? const Color(0xFFFECE2E)
                         : const Color(0xFFE0E0E0),
                   ),
                 );
@@ -149,7 +140,7 @@ class _OnboardingItem extends StatelessWidget {
   final String title;
   final String description;
   final String? buttonLabel;
-  final Widget? extraButton; // Tambahan untuk tombol ekstra di halaman tertentu
+  final Widget? extraButton;
 
   const _OnboardingItem({
     Key? key,
@@ -162,68 +153,69 @@ class _OnboardingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isSmallScreen = size.height < 600;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40),
+      padding: EdgeInsets.symmetric(
+        horizontal: isSmallScreen ? 36.0 : 40.0,
+        vertical: isSmallScreen ? 50 : 70,
+      ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          const SizedBox(height: 40),
           SizedBox(
-            height: 300, // Tinggi tetap untuk image
+            height: isSmallScreen ? 200 : 300,
             child: Lottie.asset(image),
           ),
-          const SizedBox(height: 30),
-          SizedBox(
-            height: 50, // Tinggi tetap untuk title
-            child: Text(
-              title,
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
+          const SizedBox(height: 20),
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontSize: isSmallScreen ? 20 : 24,
+              fontWeight: FontWeight.bold,
             ),
+            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 15),
-          SizedBox(
-            height: 60, // Tinggi tetap untuk description
-            child: Text(
-              description,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
+          const SizedBox(height: 10),
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: isSmallScreen ? 13 : 15,
+              color: Colors.grey[600],
             ),
           ),
           if (buttonLabel != null)
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.only(top: 20),
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle button action
+                  // Kalau mau tmbh action pas di pencet use my location
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0xFFFECE2E),
+                  foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50), // Sesuai mockup
+                    borderRadius: BorderRadius.circular(24),
                   ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 12, horizontal: 20),
+                      vertical: 10, horizontal: 18),
                   child: Text(
                     buttonLabel!,
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontSize: isSmallScreen ? 15 : 17,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
               ),
             ),
           if (extraButton != null) ...[
-            const SizedBox(height: 15), // Jarak antara tombol tambahan
+            const SizedBox(height: 15),
             extraButton!,
           ]
         ],
