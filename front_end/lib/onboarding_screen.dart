@@ -40,24 +40,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap: _nextPage, // Pindah halaman saat layar ditekan
-        child: Stack(
-          children: [
-            PageView(
+      body: Stack(
+        children: [
+          GestureDetector(
+            onTap: _nextPage, // Fitur tap layar untuk pindah halaman
+            child: PageView(
               controller: _pageController,
               onPageChanged: (int page) {
                 setState(() {
                   _currentPage = page;
                 });
               },
-              children: const [
-                _OnboardingItem(
+              children: [
+                const _OnboardingItem(
                   image: 'assets/animations/tracking.json',
                   title: 'Tracking Realtime',
                   description: 'Craftsman will know where you are automatically',
                 ),
-                _OnboardingItem(
+                const _OnboardingItem(
                   image: 'assets/animations/order-anywhere.json',
                   title: 'Order from anywhere',
                   description:
@@ -69,45 +69,76 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   description:
                       'Choose your location to start finding the request around you',
                   buttonLabel: 'Use My Location',
+                  extraButton: ElevatedButton(
+                    onPressed: () {
+                      _navigateToLogin();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[300],
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50), // Sesuai mockup
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 20),
+                      child: Text(
+                        'Skip for now',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
+          ),
+          // Tombol Skip (tidak muncul di halaman ketiga)
+          if (_currentPage < 2)
             Positioned(
-              bottom: 30,
+              bottom: 90,
               left: 0,
               right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(3, (index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: 12, // Ukuran indikator lebih besar
-                    height: 12,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _currentPage == index
-                          ? Colors.amber
-                          : const Color(0xFFE0E0E0),
+              child: GestureDetector(
+                onTap: _navigateToLogin,
+                child: Center(
+                  child: Text(
+                    'Skip',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600],
                     ),
-                  );
-                }),
-              ),
-            ),
-            Positioned(
-              top: 50,
-              right: 20,
-              child: ElevatedButton(
-                onPressed: _navigateToLogin,
-                child: const Text('Skip'),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.amber,
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          // Indikator halaman (dots)
+          Positioned(
+            bottom: 60,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(3, (index) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentPage == index
+                        ? Colors.amber
+                        : const Color(0xFFE0E0E0),
+                  ),
+                );
+              }),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -118,6 +149,7 @@ class _OnboardingItem extends StatelessWidget {
   final String title;
   final String description;
   final String? buttonLabel;
+  final Widget? extraButton; // Tambahan untuk tombol ekstra di halaman tertentu
 
   const _OnboardingItem({
     Key? key,
@@ -125,6 +157,7 @@ class _OnboardingItem extends StatelessWidget {
     required this.title,
     required this.description,
     this.buttonLabel,
+    this.extraButton,
   }) : super(key: key);
 
   @override
@@ -134,23 +167,32 @@ class _OnboardingItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset(image, height: 300),
+          SizedBox(
+            height: 300, // Tinggi tetap untuk image
+            child: Lottie.asset(image),
+          ),
           const SizedBox(height: 30),
-          Text(
-            title,
-            style: GoogleFonts.poppins(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+          SizedBox(
+            height: 50, // Tinggi tetap untuk title
+            child: Text(
+              title,
+              style: GoogleFonts.poppins(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 15),
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              color: Colors.grey[600],
+          SizedBox(
+            height: 60, // Tinggi tetap untuk description
+            child: Text(
+              description,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                color: Colors.grey[600],
+              ),
             ),
           ),
           if (buttonLabel != null)
@@ -164,7 +206,7 @@ class _OnboardingItem extends StatelessWidget {
                   backgroundColor: Colors.amber,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(50), // Sesuai mockup
                   ),
                 ),
                 child: Padding(
@@ -180,6 +222,10 @@ class _OnboardingItem extends StatelessWidget {
                 ),
               ),
             ),
+          if (extraButton != null) ...[
+            const SizedBox(height: 15), // Jarak antara tombol tambahan
+            extraButton!,
+          ]
         ],
       ),
     );
