@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+
+import 'package:front_end/login.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -90,24 +91,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
           if (_currentPage < 2)
-            Positioned(
-              bottom: isSmallScreen ? 110 : 130,
-              left: 0,
-              right: 0,
-              child: GestureDetector(
-                onTap: _navigateToLogin,
-                child: Center(
-                  child: Text(
-                    'Skip',
-                    style: GoogleFonts.poppins(
-                      fontSize: isSmallScreen ? 14 : 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600],
-                    ),
+          Positioned(
+            bottom: isSmallScreen ? 110 : 130,
+            left: 0,
+            right: 0,
+            child: TextButton(
+              onPressed: _navigateToLogin,  
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,  
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,  
+              ),
+              child: Center(
+                child: Text(
+                  'Skip',
+                  style: GoogleFonts.poppins(
+                    fontSize: isSmallScreen ? 14 : 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600],  // Warna teks tombol
                   ),
                 ),
               ),
             ),
+          ),
           Positioned(
             bottom: isSmallScreen ? 80 : 90,
             left: 0,

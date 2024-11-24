@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
 import 'app.dart';
-void main() {
-  runApp(const BantuIn());
-}
+void main() => runApp(const BantuIn());
+
