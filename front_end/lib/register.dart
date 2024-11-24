@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/login.dart';
+// import 'package:front_end/login.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -26,18 +26,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Row untuk tombol back dan teks "Get Started"
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Tombol Back
+                  // tmbol back
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  // Teks Get Started
                   const Text(
                     'Get Started',
                     style: TextStyle(
@@ -45,12 +43,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  // Space dummy agar tombol back berada di kiri dan teks di tengah
-                  const SizedBox(width: 48), // Ukuran sesuai kebutuhan
+                  const SizedBox(width: 48), // antara get started sm textfield
                 ],
               ),
               const SizedBox(height: 40),
-              // Form Name
+              // Form 
               SizedBox(
                 height: 50,
                 child: TextField(
@@ -69,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 15),
-              // Form E-mail
+              // Form 
               SizedBox(
                 height: 50,
                 child: TextField(
