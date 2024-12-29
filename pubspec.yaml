@@ -64,6 +64,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/login-image.png
+    - assets/flags/us.png
+    - assets/flags/indonesia.png
+    - assets/flags/india.png
     - assets/animations/tracking.json
     - assets/animations/order-anywhere.json
     - assets/animations/enable-location.json

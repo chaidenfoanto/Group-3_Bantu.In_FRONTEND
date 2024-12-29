@@ -18,6 +18,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isChecked = false; 
   final _formKey = GlobalKey<FormState>();
 
+  String _selectedCountryCode = '+62';
+  final List<Map<String, String>> _countries = [
+    {'code': '+62', 'name': 'Indonesia', 'flag': 'assets/flags/indonesia.png'},
+    {'code': '+1', 'name': 'United States', 'flag': 'assets/flags/us.png'},
+    {'code': '+91', 'name': 'India', 'flag': 'assets/flags/india.png'},
+  ];
+
   void _register() {
     if (_formKey.currentState?.validate() ?? false) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -33,7 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -65,17 +72,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     // Nama
                     SizedBox(
-                      height: 50,
+                      height: 60,
                       child: TextFormField(
                         controller: _nameController,
                         decoration: InputDecoration(
                           labelText: 'Name',
-                          labelStyle: const TextStyle(fontSize: 16),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          labelStyle: const TextStyle(fontSize: 15),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: Colors.transparent),  
                           ),
                           contentPadding:
-                              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                              const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -90,17 +102,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 15),
                     // Email
                     SizedBox(
-                      height: 50,
+                      height: 60,
                       child: TextFormField(
                         controller: _emailController,
                         decoration: InputDecoration(
                           labelText: 'E-mail',
-                          labelStyle: const TextStyle(fontSize: 16),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          labelStyle: const TextStyle(fontSize: 15),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: Colors.transparent),  
                           ),
                           contentPadding:
-                              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                              const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -118,17 +135,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 15),
                     // Password
                     SizedBox(
-                      height: 50,
+                      height: 60,
                       child: TextFormField(
                         controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: 'Password',
-                          labelStyle: const TextStyle(fontSize: 16),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          labelStyle: const TextStyle(fontSize: 15),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: Colors.transparent),  
                           ),
                           contentPadding:
-                              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                              const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -144,17 +166,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 15),
                     // Confirm Password
                     SizedBox(
-                      height: 50,
+                      height: 60,
                       child: TextFormField(
                         controller: _confirmPasswordController,
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
-                          labelStyle: const TextStyle(fontSize: 16),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          labelStyle: const TextStyle(fontSize: 15),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: Colors.transparent),  
                           ),
                           contentPadding:
-                              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                              const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -172,36 +199,119 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 15),
                     // Nomor Ponsel
-                    SizedBox(
-                      height: 50,
-                      child: TextFormField(
-                        controller: _mobileController,
-                        decoration: InputDecoration(
-                          labelText: 'Mobile Phone Number',
-                          labelStyle: const TextStyle(fontSize: 16),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                    Row(
+                      children: [
+                        // Dropdown Bendera
+                        Container(
+                          width: 100, // Ukuran tetap untuk konsistensi
+                          height: 60, // Tinggi konsisten dengan input lainnya
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: Colors.grey.shade200,
+                            border: Border.all(color: Colors.transparent),
                           ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
-                          prefixIcon: Container(
-                            padding: const EdgeInsets.all(10),
-                            child: const Text(
-                              '+62',
-                              style: TextStyle(fontSize: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: _selectedCountryCode,
+                              isExpanded: true,
+                              items: _countries.map((country) {
+                                return DropdownMenuItem<String>(
+                                  value: country['code'],
+                                  child: SizedBox(
+                                    height: 50, // Tinggi konten dropdown sesuai kebutuhan
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          country['flag']!,
+                                          width: 24,
+                                          height: 24,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          '${country['code']}',
+                                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            country['name']!,
+                                            style: const TextStyle(fontSize: 14),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCountryCode = value!;
+                                });
+                              },
+                              // Saat dropdown tertutup, hanya tampilkan bendera & kode
+                              selectedItemBuilder: (BuildContext context) {
+                                return _countries.map((country) {
+                                  return Row(
+                                    children: [
+                                      Image.asset(
+                                        country['flag']!,
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        '${country['code']}',
+                                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  );
+                                }).toList();
+                              },
                             ),
                           ),
                         ),
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          if (value?.isEmpty ?? true) {
-                            return 'Nomor ponsel tidak boleh kosong';
-                          }
-                          return null;
-                        },
-                      ),
+                        const SizedBox(width: 10),
+                        // Input Nomor Telepon
+                        Expanded(
+                          child: SizedBox(
+                            height: 60, // Tinggi konsisten
+                            child: TextFormField(
+                              controller: _mobileController,
+                              decoration: InputDecoration(
+                                prefixText: '$_selectedCountryCode ',
+                                prefixStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                                labelText: 'Mobile Number',
+                                labelStyle: const TextStyle(fontSize: 15),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(color: Colors.transparent),  
+                                ),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                              ),
+                              keyboardType: TextInputType.phone,
+                              validator: (value) {
+                                if (value?.isEmpty ?? true) {
+                                  return 'Nomor ponsel tidak boleh kosong';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
                     // Checkbox Terms & Conditions
@@ -232,7 +342,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           backgroundColor: Colors.yellow.shade600,
                           foregroundColor: Colors.black,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                         ),
                         child: const Text(

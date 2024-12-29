@@ -71,22 +71,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.email, color: Colors.black),
                     labelText: 'E-mail',
-                    labelStyle: const TextStyle(fontSize: 16),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white, 
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                    labelStyle: const TextStyle(fontSize: 15),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.black, width: 0.8), 
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide(color: Colors.transparent),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.black, width: 0.8), 
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide(color: Colors.transparent),  
                     ),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
                   ),
                 ),
               ),
@@ -111,22 +108,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                     labelText: 'Password',
-                    labelStyle: const TextStyle(fontSize: 16),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                    labelStyle: const TextStyle(fontSize: 15),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.black, width: 0.8), 
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide(color: Colors.transparent),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.black, width: 0.8), 
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide(color: Colors.transparent),  
                     ),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
                   ),
                 ),
               ),
@@ -141,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     backgroundColor: Colors.grey.shade300,
                     foregroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(14),
                     ),
                     shadowColor: Colors.grey.shade300.withOpacity(0.5),
                     elevation: 4,
@@ -165,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     backgroundColor: Colors.yellow.shade600,
                     foregroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(14),
                     ),
                     shadowColor: Colors.yellow.shade600.withOpacity(0.5),
                     elevation: 4,
