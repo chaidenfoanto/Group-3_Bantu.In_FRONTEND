@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 
 import 'package:front_end/login.dart';
 
@@ -21,7 +22,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
-  void _navigateToLogin() {
+  // Function utk ke login page
+  Future<void> _navigateToLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isFirstLaunch', false); 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
@@ -76,7 +80,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       'Choose your location to start finding the request around you',
                   buttonLabel: 'USE MY LOCATION', 
                   extraButton: GestureDetector(
-                    onTap: _navigateToLogin,
+                    onTap: _navigateToLogin, 
                     child: Text(
                       'Skip For Now',
                       style: GoogleFonts.poppins(
@@ -91,28 +95,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
           if (_currentPage < 2)
-          Positioned(
-            bottom: isSmallScreen ? 110 : 130,
-            left: 0,
-            right: 0,
-            child: TextButton(
-              onPressed: _navigateToLogin,  
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,  
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,  
-              ),
-              child: Center(
-                child: Text(
-                  'Skip',
-                  style: GoogleFonts.poppins(
-                    fontSize: isSmallScreen ? 14 : 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey[600],  // Warna teks tombol
+            Positioned(
+              bottom: isSmallScreen ? 110 : 130,
+              left: 0,
+              right: 0,
+              child: TextButton(
+                onPressed: _navigateToLogin, 
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,  
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,  
+                ),
+                child: Center(
+                  child: Text(
+                    'Skip',
+                    style: GoogleFonts.poppins(
+                      fontSize: isSmallScreen ? 14 : 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600],  
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
           Positioned(
             bottom: isSmallScreen ? 80 : 90,
             left: 0,

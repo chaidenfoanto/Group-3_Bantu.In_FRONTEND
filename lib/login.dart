@@ -15,12 +15,20 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = _emailController.text;
     final password = _passwordController.text;
 
-    // Simulasi autentikasi (ganti dengan logika sebenarnya)
+    // Validasi email dan password
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Email dan password tidak boleh kosong.')),
+      );
+      return;
+    }
+
+    // Simulasi authnetication
     if (email == 'user@example.com' && password == 'password') {
-      Navigator.of(context).pushReplacementNamed('/dashboard');
+      Navigator.of(context).pushReplacementNamed('/dashboard');  // Ganti dengan route halaman dashboard
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid credentials.')),
+        const SnackBar(content: Text('Kredensial tidak valid.')),
       );
     }
   }
@@ -36,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 40),
-              // Judul Aplikasi
+              // Nama Aplikasi
               const Text(
                 'Bantu.in',
                 style: TextStyle(
@@ -51,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 250,
               ),
               const SizedBox(height: 30),
-              // Form Email
+              // Email
               SizedBox(
                 height: 50,
                 child: TextField(
@@ -68,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 15),
-              // Form Password
+              // Password
               SizedBox(
                 height: 50,
                 child: TextField(

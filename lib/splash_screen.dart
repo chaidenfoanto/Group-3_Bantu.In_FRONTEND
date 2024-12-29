@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart'; 
 
 import 'onboarding_screen.dart';
+import 'login.dart'; 
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -19,54 +21,59 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-
-    // Membuat AnimationController untuk animasi fade in dan scale
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     );
 
-    // Animasi untuk fade in
     _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeIn),
     );
 
-    // Animasi untuk scale (memperbesar teks)
     _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
 
-    // Mulai animasi
     _controller.forward();
 
-    // Setelah animasi selesai, navigasi ke OnboardingScreen
-    _navigateToOnboarding();
+    _navigateToNextPage();
   }
 
-  // Fungsi untuk navigasi dengan delay
-  void _navigateToOnboarding() async {
+  Future<void> _navigateToNextPage() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+
     await Future.delayed(const Duration(seconds: 2));
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const OnboardingScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0.0, 1.0); // Mulai dari bawah layar
-          const end = Offset.zero; // Berakhir di posisi normal
-          const curve = Curves.easeOut; // Animasi halus
 
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          var offsetAnimation = animation.drive(tween);
+    if (isFirstLaunch) {
+      prefs.setBool('isFirstLaunch', false);
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const OnboardingScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(0.0, 1.0); 
+            const end = Offset.zero; 
+            const curve = Curves.easeOut; 
 
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(seconds: 1), // Durasi transisi halus
-      ),
-    );
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(seconds: 1), 
+        ),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    }
   }
 
   @override
@@ -75,9 +82,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       backgroundColor: const Color(0xFFFECE2E),
       body: Center(
         child: FadeTransition(
-          opacity: _opacityAnimation, // Fade in effect
+          opacity: _opacityAnimation, 
           child: ScaleTransition(
-            scale: _scaleAnimation, // Scale effect
+            scale: _scaleAnimation, 
             child: Text(
               'Bantu.In',
               style: GoogleFonts.poppins(

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart'; 
 
 import 'splash_screen.dart';
 import 'onboarding_screen.dart';
 import 'login.dart';
 import 'register.dart';
+
 class BantuIn extends StatefulWidget {
   const BantuIn({Key? key}) : super(key: key);
 
@@ -12,14 +15,33 @@ class BantuIn extends StatefulWidget {
 }
 
 class _BantuInAppState extends State<BantuIn> {
+  late Future<bool> _isFirstLaunch;
+
+  Future<bool> _checkFirstLaunch() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+
+    if (isFirstLaunch) {
+      prefs.setBool('isFirstLaunch', false);
+    }
+
+    return isFirstLaunch;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isFirstLaunch = _checkFirstLaunch();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Bantu.In',
       theme: ThemeData(
-        primaryColor: const Color(0xFFFECE2E), // Warna primer (kuning)
-        secondaryHeaderColor: Colors.black, // Warna sekunder (hitam)
-        scaffoldBackgroundColor: Colors.white, // Latar belakang putih
+        primaryColor: const Color(0xFFFECE2E), 
+        secondaryHeaderColor: Colors.black, 
+        scaffoldBackgroundColor: Colors.white, 
         textTheme: const TextTheme(
           displayLarge: TextStyle(fontFamily: 'Poppins', fontSize: 96, fontWeight: FontWeight.bold, color: Colors.black),
           displayMedium: TextStyle(fontFamily: 'Poppins', fontSize: 60, fontWeight: FontWeight.bold, color: Colors.black),
@@ -36,11 +58,24 @@ class _BantuInAppState extends State<BantuIn> {
           labelSmall: TextStyle(fontFamily: 'Poppins', fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),
         ),
       ),
-      home: const SplashScreen(), // Tambahkan const di sini untuk meningkatkan performa
+      home: FutureBuilder<bool>(
+        future: _isFirstLaunch,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SplashScreen();
+          } else if (snapshot.hasData && snapshot.data == true) {
+            return const SplashScreen();
+          } else {
+            return const LoginScreen();
+          }
+        },
+      ),
       routes: {
+        // '/': (context) => const SplashScreen(),
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
+        '/dashboard': (context) => const DashboardScreen(),
       },
     );
   }
