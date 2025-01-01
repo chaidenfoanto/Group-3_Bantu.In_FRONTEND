@@ -1,12 +1,5 @@
 {
    "epochs": [ {
-      "calculation_time": "13377575770096672",
-      "config_version": 0,
-      "model_version": "0",
-      "padded_top_topics_start_index": 0,
-      "taxonomy_version": 0,
-      "top_topics_and_observing_domains": [  ]
-   }, {
       "calculation_time": "13379846240104464",
       "config_version": 0,
       "model_version": "0",

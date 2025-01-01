@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     prefixIcon: const Icon(Icons.email, color: Colors.black),
                     labelText: 'E-mail',
                     labelStyle: const TextStyle(fontSize: 15),
+                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
                       borderSide: BorderSide(color: Colors.transparent),
@@ -109,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     labelText: 'Password',
                     labelStyle: const TextStyle(fontSize: 15),
+                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
                       borderSide: BorderSide(color: Colors.transparent),

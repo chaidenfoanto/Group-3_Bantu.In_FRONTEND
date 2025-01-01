@@ -11,8 +11,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
 
   bool _isChecked = false; 
@@ -28,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _register() {
     if (_formKey.currentState?.validate() ?? false) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registrasi berhasil!')),
+        const SnackBar(content: Text('Registration Success!')),
       );
       Navigator.of(context).pushReplacementNamed('/login');  
     }
@@ -44,26 +43,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              const SizedBox(height: 40),
+              Stack(
                 children: [
-                  // Tombol back
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  const Text(
-                    'Get Started',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
                   ),
-                  const SizedBox(width: 48), 
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Get Started',
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
               ),
+
               const SizedBox(height: 40),
               // Form 
               Form(
@@ -78,6 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: InputDecoration(
                           labelText: 'Name',
                           labelStyle: const TextStyle(fontSize: 15),
+                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: BorderSide(color: Colors.transparent),
@@ -86,14 +91,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(14),
                             borderSide: BorderSide(color: Colors.transparent),  
                           ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                          prefixIcon: Icon(Icons.person, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Nama tidak boleh kosong';
+                            return 'Nama cannot be empty';
                           }
                           return null;
                         },
@@ -108,6 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: InputDecoration(
                           labelText: 'E-mail',
                           labelStyle: const TextStyle(fontSize: 15),
+                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: BorderSide(color: Colors.transparent),
@@ -116,17 +122,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(14),
                             borderSide: BorderSide(color: Colors.transparent),  
                           ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                          prefixIcon: Icon(Icons.email, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Email tidak boleh kosong';
+                            return 'Email cannot be empty';
                           }
                           if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value!)) {
-                            return 'Email tidak valid';
+                            return 'Invalid email';
                           }
                           return null;
                         },
@@ -141,6 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: InputDecoration(
                           labelText: 'Password',
                           labelStyle: const TextStyle(fontSize: 15),
+                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: BorderSide(color: Colors.transparent),
@@ -149,15 +156,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(14),
                             borderSide: BorderSide(color: Colors.transparent),  
                           ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                          prefixIcon: Icon(Icons.lock, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
                         obscureText: true,
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Password tidak boleh kosong';
+                            return 'Password cannot be empty';
                           }
                           return null;
                         },
@@ -172,6 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
                           labelStyle: const TextStyle(fontSize: 15),
+                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: BorderSide(color: Colors.transparent),
@@ -180,18 +188,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(14),
                             borderSide: BorderSide(color: Colors.transparent),  
                           ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                          prefixIcon: Icon(Icons.lock_outline, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
                         obscureText: true,
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Konfirmasi password tidak boleh kosong';
+                            return 'Confirm password cannot be empty';
                           }
                           if (value != _passwordController.text) {
-                            return 'Password dan konfirmasi password tidak cocok';
+                            return 'Passwords do not match!';
                           }
                           return null;
                         },
@@ -200,11 +208,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 15),
                     // Nomor Ponsel
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Dropdown Bendera
+                        // Dropdown Kode Negara
                         Container(
-                          width: 100, // Ukuran tetap untuk konsistensi
-                          height: 60, // Tinggi konsisten dengan input lainnya
+                          width: 80,
+                          height: 60, // Set tinggi sama dengan input field nomor telepon
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
                             color: Colors.grey.shade200,
@@ -212,25 +221,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: _selectedCountryCode,
-                              isExpanded: true,
-                              items: _countries.map((country) {
-                                return DropdownMenuItem<String>(
-                                  value: country['code'],
-                                  child: SizedBox(
-                                    height: 50, // Tinggi konten dropdown sesuai kebutuhan
+                            child: Align(
+                              alignment: Alignment.center, // Pastikan dropdown terpusat vertikal
+                              child: DropdownButton<String>(
+                                value: _selectedCountryCode,
+                                isExpanded: true,
+                                isDense: true,
+                                items: _countries.map((country) {
+                                  return DropdownMenuItem<String>(
+                                    value: country['code'],
                                     child: Row(
                                       children: [
                                         Image.asset(
                                           country['flag']!,
-                                          width: 24,
-                                          height: 24,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          '${country['code']}',
-                                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                          width: 28,
+                                          height: 36,
+                                          fit: BoxFit.contain,
                                         ),
                                         const SizedBox(width: 8),
                                         Expanded(
@@ -242,33 +248,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         ),
                                       ],
                                     ),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedCountryCode = value!;
-                                });
-                              },
-                              // Saat dropdown tertutup, hanya tampilkan bendera & kode
-                              selectedItemBuilder: (BuildContext context) {
-                                return _countries.map((country) {
-                                  return Row(
-                                    children: [
-                                      Image.asset(
-                                        country['flag']!,
-                                        width: 24,
-                                        height: 24,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        '${country['code']}',
-                                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
                                   );
-                                }).toList();
-                              },
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedCountryCode = value!;
+                                  });
+                                },
+                                selectedItemBuilder: (BuildContext context) {
+                                  return _countries.map((country) {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          country['flag']!,
+                                          width: 28,
+                                          height: 36,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ],
+                                    );
+                                  }).toList();
+                                },
+                                dropdownColor: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -276,7 +279,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // Input Nomor Telepon
                         Expanded(
                           child: SizedBox(
-                            height: 60, // Tinggi konsisten
+                            height: 60, // Set tinggi input field nomor telepon agar konsisten
                             child: TextFormField(
                               controller: _mobileController,
                               decoration: InputDecoration(
@@ -288,23 +291,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 labelText: 'Mobile Number',
                                 labelStyle: const TextStyle(fontSize: 15),
+                                floatingLabelStyle: TextStyle(color: Colors.yellow.shade600),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(14),
                                   borderSide: BorderSide(color: Colors.transparent),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(14),
-                                  borderSide: BorderSide(color: Colors.transparent),  
+                                  borderSide: BorderSide(color: Colors.transparent),
                                 ),
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                                prefixIcon: Icon(Icons.phone, color: Colors.grey.shade600),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
                               ),
                               keyboardType: TextInputType.phone,
                               validator: (value) {
                                 if (value?.isEmpty ?? true) {
-                                  return 'Nomor ponsel tidak boleh kosong';
+                                  return 'Mobile phone cannot be empty';
                                 }
                                 return null;
                               },
@@ -326,7 +330,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                         ),
                         const Text(
-                          'Saya sedang mencari aplikasi jasa tukang',
+                          'I agree to the Bantu.In Terms & Conditions',
                           style: TextStyle(fontSize: 12),
                         ),
                       ],
@@ -337,7 +341,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _isChecked ? _register : null,  // Menonaktifkan jika checkbox tidak dicentang
+                        onPressed: _isChecked ? _register : null, 
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.yellow.shade600,
                           foregroundColor: Colors.black,
