@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:front_end/widgets/terms_conditions.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -244,14 +245,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    // Nomor Ponsel
+                    // Mobile Phone
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Dropdown Kode Negara
+                        // Dropdown Bendera Negara
                         Container(
                           width: 80,
-                          height: 60, // Set tinggi sama dengan input field nomor telepon
+                          height: 60, 
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
                             color: Colors.grey.shade200,
@@ -260,7 +261,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: DropdownButtonHideUnderline(
                             child: Align(
-                              alignment: Alignment.center, // Pastikan dropdown terpusat vertikal
+                              alignment: Alignment.center,
                               child: DropdownButton<String>(
                                 value: _selectedCountryCode,
                                 isExpanded: true,
@@ -314,10 +315,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        // Input Nomor Telepon
+                        // Input Field Nomor Telepon
                         Expanded(
                           child: SizedBox(
-                            height: 60, // Set tinggi input field nomor telepon agar konsisten
+                            height: 60, 
                             child: TextFormField(
                               controller: _mobileController,
                               decoration: InputDecoration(
@@ -361,41 +362,63 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 20),
                     // Checkbox Terms & Conditions
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center, // Pastikan sejajar secara vertikal
+                      crossAxisAlignment: CrossAxisAlignment.center, 
                       children: [
-                        Checkbox(
-                          value: _isChecked,
-                          onChanged: (value) {
-                            setState(() {
-                              _isChecked = value ?? false;
-                            });
-                          },
+                        Container(
+                          child: Checkbox(
+                            value: _isChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                _isChecked = value ?? false;
+                              });
+                            },
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, 
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50), 
+                            ),
+                            side: BorderSide(
+                              color: Colors.transparent, 
+                              width: 2,
+                            ),
+                            fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return Colors.yellow.shade600; // Fillcolor pas selected
+                              }
+                              return Colors.grey.shade200; // Pas tdk
+                            }),
+                          ),
                         ),
                         Expanded(
                           child: RichText(
-                            textAlign: TextAlign.start, // Atur teks sejajar kiri
+                            textAlign: TextAlign.start,
                             text: TextSpan(
-                              text: 'I agree to the ',
+                              text: 'I agree to ',
                               style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: 14,
                                 color: Colors.black,
+                                // fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold
                               ),
                               children: [
                                 TextSpan(
-                                  text: 'Bantu.In Terms & Conditions',
+                                  text: "Bantu.In's Terms & Conditions",
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     color: Colors.yellow.shade600,
-                                    decoration: TextDecoration.underline,
                                   ),
                                   recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      // Tampilkan dialog Terms & Conditions
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => const TermsConditionsDialog(),
-                                      );
-                                    },
+                                  ..onTap = () async {
+                                    final result = await showDialog<bool>(
+                                      context: context,
+                                      builder: (context) => const TermsConditionsDialog(),
+                                    );
+
+                                    if (result == true && !_isChecked) {
+                                      setState(() {
+                                        _isChecked = true; // Centang checkbox jika belum tercentang
+                                      });
+                                    }
+                                  },
                                 ),
                               ],
                             ),
@@ -403,6 +426,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ],
                     ),
+
                     const SizedBox(height: 20),
                     // Tombol Sign Up
                     SizedBox(
@@ -416,6 +440,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
+                          shadowColor: Colors.grey.shade300.withOpacity(0.7),
+                          elevation: 4,
                         ),
                         child: const Text(
                           'Sign Up',
@@ -434,121 +460,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-class TermsConditionsDialog extends StatelessWidget {
-  const TermsConditionsDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        // Menggunakan warna putih dari ThemeData
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8, // 80% dari lebar layar
-          height: MediaQuery.of(context).size.height * 0.7, // 70% dari tinggi layar
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Terms & Conditions',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ), // Menggunakan TextStyle dari ThemeData
-                ),
-                const SizedBox(height: 8),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: RichText(
-                      text: TextSpan(
-                        style: Theme.of(context).textTheme.bodyMedium, // Menggunakan font Poppins dari ThemeData
-                        children: [
-                          TextSpan(
-                            text: 'Terms & Conditions - Pengguna\n\n',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: '1. Definisi\n',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          TextSpan(
-                            text:
-                                '  a. Pengguna: Individu yang menggunakan aplikasi Bantu.In untuk memesan layanan dari Tukang.\n',
-                          ),
-                          TextSpan(
-                            text:
-                                '  b. Tukang: Penyedia jasa yang terdaftar di aplikasi Bantu.In.\n\n',
-                          ),
-                          TextSpan(
-                            text: '2. Persyaratan Penggunaan\n',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          TextSpan(
-                            text:
-                                '  a. Pengguna wajib memberikan data yang valid, termasuk nama lengkap, nomor telepon aktif, dan alamat yang jelas.\n',
-                          ),
-                          TextSpan(
-                            text:
-                                '  b. Pengguna bertanggung jawab atas keakuratan informasi yang diberikan.\n\n',
-                          ),
-                          TextSpan(
-                            text: '... (Lanjutkan isi sesuai desain)\n',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.grey.shade600,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey.shade300,
-                      ),
-                      child: const Text(
-                        'Decline',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // Tambahkan aksi jika diperlukan
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.yellow.shade600,
-                      ),
-                      child: const Text('Accept'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 

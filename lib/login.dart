@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    shadowColor: Colors.grey.shade300.withOpacity(0.5),
+                    shadowColor: Colors.grey.shade300.withOpacity(0.7),
                     elevation: 4,
                   ),
                   child: const Text(
