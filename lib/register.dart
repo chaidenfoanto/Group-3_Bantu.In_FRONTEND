@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -14,6 +15,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
 
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
   bool _isChecked = false; 
   final _formKey = GlobalKey<FormState>();
 
@@ -23,6 +27,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     {'code': '+1', 'name': 'United States', 'flag': 'assets/flags/us.png'},
     {'code': '+91', 'name': 'India', 'flag': 'assets/flags/india.png'},
   ];
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   void _register() {
     if (_formKey.currentState?.validate() ?? false) {
@@ -98,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Nama cannot be empty';
+                            return 'Name cannot be empty';
                           }
                           return null;
                         },
@@ -146,6 +157,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
                           labelStyle: const TextStyle(fontSize: 15),
                           floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
@@ -161,10 +184,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
-                        obscureText: true,
+                        obscureText: true && !_isPasswordVisible,
                         validator: (value) {
-                          if (value?.isEmpty ?? true) {
+                          if (value == null || value.isEmpty) {
                             return 'Password cannot be empty';
+                          }
+                          if (value.length < 8) {
+                            return 'Your password needs to be at least 8 characters';
                           }
                           return null;
                         },
@@ -178,6 +204,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: _confirmPasswordController,
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isConfirmPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                              });
+                            },
+                          ),
                           labelStyle: const TextStyle(fontSize: 15),
                           floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
@@ -193,7 +231,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
-                        obscureText: true,
+                        obscureText: true && !_isConfirmPasswordVisible,
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
                             return 'Confirm password cannot be empty';
@@ -310,6 +348,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 if (value?.isEmpty ?? true) {
                                   return 'Mobile phone cannot be empty';
                                 }
+                                if (!RegExp(r'^\d+$').hasMatch(value!)) {
+                                  return 'Please enter a valid phone number (only numbers)';
+                                }
                                 return null;
                               },
                             ),
@@ -320,6 +361,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 20),
                     // Checkbox Terms & Conditions
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center, // Pastikan sejajar secara vertikal
                       children: [
                         Checkbox(
                           value: _isChecked,
@@ -329,9 +371,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                           },
                         ),
-                        const Text(
-                          'I agree to the Bantu.In Terms & Conditions',
-                          style: TextStyle(fontSize: 12),
+                        Expanded(
+                          child: RichText(
+                            textAlign: TextAlign.start, // Atur teks sejajar kiri
+                            text: TextSpan(
+                              text: 'I agree to the ',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Bantu.In Terms & Conditions',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.yellow.shade600,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      // Tampilkan dialog Terms & Conditions
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => const TermsConditionsDialog(),
+                                      );
+                                    },
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -365,3 +433,122 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
+
+class TermsConditionsDialog extends StatelessWidget {
+  const TermsConditionsDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        // Menggunakan warna putih dari ThemeData
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8, // 80% dari lebar layar
+          height: MediaQuery.of(context).size.height * 0.7, // 70% dari tinggi layar
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Terms & Conditions',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ), // Menggunakan TextStyle dari ThemeData
+                ),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.bodyMedium, // Menggunakan font Poppins dari ThemeData
+                        children: [
+                          TextSpan(
+                            text: 'Terms & Conditions - Pengguna\n\n',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: '1. Definisi\n',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          TextSpan(
+                            text:
+                                '  a. Pengguna: Individu yang menggunakan aplikasi Bantu.In untuk memesan layanan dari Tukang.\n',
+                          ),
+                          TextSpan(
+                            text:
+                                '  b. Tukang: Penyedia jasa yang terdaftar di aplikasi Bantu.In.\n\n',
+                          ),
+                          TextSpan(
+                            text: '2. Persyaratan Penggunaan\n',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          TextSpan(
+                            text:
+                                '  a. Pengguna wajib memberikan data yang valid, termasuk nama lengkap, nomor telepon aktif, dan alamat yang jelas.\n',
+                          ),
+                          TextSpan(
+                            text:
+                                '  b. Pengguna bertanggung jawab atas keakuratan informasi yang diberikan.\n\n',
+                          ),
+                          TextSpan(
+                            text: '... (Lanjutkan isi sesuai desain)\n',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.grey.shade600,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey.shade300,
+                      ),
+                      child: const Text(
+                        'Decline',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        // Tambahkan aksi jika diperlukan
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.yellow.shade600,
+                      ),
+                      child: const Text('Accept'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
