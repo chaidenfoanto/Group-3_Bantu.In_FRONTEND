@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPre
 import 'package:front_end/login.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -152,13 +152,13 @@ class _OnboardingItem extends StatelessWidget {
   final Widget? extraButton;
 
   const _OnboardingItem({
-    Key? key,
+    super.key,
     required this.image,
     required this.title,
     required this.description,
     this.buttonLabel,
     this.extraButton,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

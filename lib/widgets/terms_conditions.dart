@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TermsConditionsDialog extends StatelessWidget {
-  const TermsConditionsDialog({Key? key}) : super(key: key);
+  const TermsConditionsDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +49,11 @@ class TermsConditionsDialog extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),
-                          TextSpan(
+                          const TextSpan(
                             text:
                                 '  a. Pengguna: Individu yang menggunakan aplikasi Bantu.In untuk memesan layanan dari Tukang.\n',
                           ),
-                          TextSpan(
+                          const TextSpan(
                             text:
                                 '  b. Tukang: Penyedia jasa yang terdaftar di aplikasi Bantu.In.\n\n',
                           ),
@@ -63,11 +63,11 @@ class TermsConditionsDialog extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),
-                          TextSpan(
+                          const TextSpan(
                             text:
                                 '  a. Pengguna wajib memberikan data yang valid, termasuk nama lengkap, nomor telepon aktif, dan alamat yang jelas.\n',
                           ),
-                          TextSpan(
+                          const TextSpan(
                             text:
                                 '  b. Pengguna bertanggung jawab atas keakuratan informasi yang diberikan.\n\n',
                           ),

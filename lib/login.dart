@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front_end/dashboard.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -75,11 +75,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide(color: Colors.transparent),
+                      borderSide: const BorderSide(color: Colors.transparent),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide(color: Colors.transparent),  
+                      borderSide: const BorderSide(color: Colors.transparent),  
                     ),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
@@ -113,11 +113,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide(color: Colors.transparent),
+                      borderSide: const BorderSide(color: Colors.transparent),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide(color: Colors.transparent),  
+                      borderSide: const BorderSide(color: Colors.transparent),  
                     ),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 14, horizontal: 22),

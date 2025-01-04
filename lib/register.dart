@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:front_end/widgets/terms_conditions.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -67,11 +67,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                     ),
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                     child: Text(
                       'Get Started',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
                       ),
@@ -97,11 +97,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(color: Colors.transparent),  
+                            borderSide: const BorderSide(color: Colors.transparent),  
                           ),
                           prefixIcon: Icon(Icons.person, color: Colors.grey.shade600),
                           contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
@@ -128,11 +128,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(color: Colors.transparent),  
+                            borderSide: const BorderSide(color: Colors.transparent),  
                           ),
                           prefixIcon: Icon(Icons.email, color: Colors.grey.shade600),
                           contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
@@ -174,11 +174,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(color: Colors.transparent),  
+                            borderSide: const BorderSide(color: Colors.transparent),  
                           ),
                           prefixIcon: Icon(Icons.lock, color: Colors.grey.shade600),
                           contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
@@ -221,11 +221,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(color: Colors.transparent),  
+                            borderSide: const BorderSide(color: Colors.transparent),  
                           ),
                           prefixIcon: Icon(Icons.lock_outline, color: Colors.grey.shade600),
                           contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
@@ -333,11 +333,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 floatingLabelStyle: TextStyle(color: Colors.yellow.shade600),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(14),
-                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderSide: const BorderSide(color: Colors.transparent),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(14),
-                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderSide: const BorderSide(color: Colors.transparent),
                                 ),
                                 prefixIcon: Icon(Icons.phone, color: Colors.grey.shade600),
                                 contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
@@ -376,7 +376,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50), 
                             ),
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: Colors.transparent, 
                               width: 2,
                             ),

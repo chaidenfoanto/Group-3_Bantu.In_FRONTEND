@@ -8,7 +8,7 @@ import 'login.dart';
 import 'register.dart';
 
 class BantuIn extends StatefulWidget {
-  const BantuIn({Key? key}) : super(key: key);
+  const BantuIn({super.key});
 
   @override
   _BantuInAppState createState() => _BantuInAppState();
