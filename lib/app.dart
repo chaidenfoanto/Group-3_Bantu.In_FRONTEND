@@ -20,21 +20,21 @@ class _BantuInAppState extends State<BantuIn> {
   Future<String> _determineInitialScreen() async {
     final prefs = await SharedPreferences.getInstance();
     
-    // Periksa apakah ini pertama kali pengguna meluncurkan aplikasi
+    // periksa apakah pertama kali user membuka aplikasi
     bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
 
     if (isFirstLaunch) {
       await prefs.setBool('isFirstLaunch', false);
-      return 'splash'; // Jika pertama kali, arahkan ke SplashScreen
+      return 'splash'; // kalau pertama kali, arahkan ke SplashScreen
     }
 
-    // Periksa apakah pengguna sudah login
+    // periksa apakah user sudah login
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
     if (isLoggedIn) {
-      return 'dashboard'; // Jika sudah login, arahkan ke Dashboard
+      return 'dashboard'; // kalau sudah login, arahkan ke Dashboard
     } else {
-      return 'login'; // Jika belum login, arahkan ke LoginScreen
+      return 'login'; // kalau belum login, arahkan ke LoginScreen
     }
   }
 
@@ -72,7 +72,7 @@ class _BantuInAppState extends State<BantuIn> {
         future: _initialScreen,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SplashScreen(); // Tampilkan SplashScreen saat menunggu
+            return const SplashScreen(); 
           } else if (snapshot.hasData) {
             switch (snapshot.data) {
               case 'splash':
@@ -84,7 +84,7 @@ class _BantuInAppState extends State<BantuIn> {
                 return const LoginScreen();
             }
           } else {
-            return const LoginScreen(); // Fallback ke LoginScreen
+            return const LoginScreen(); 
           }
         },
       ),

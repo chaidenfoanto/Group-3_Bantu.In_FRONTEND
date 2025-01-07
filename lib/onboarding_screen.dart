@@ -25,7 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // Function utk ke login page
   Future<void> _navigateToLogin() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isFirstLaunch', false); 
+    prefs.setBool('isFirstLaunch', false);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
@@ -65,7 +65,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const _OnboardingItem(
                   image: 'assets/animations/tracking.json',
                   title: 'Tracking Realtime',
-                  description: 'Craftsman will know where you are automatically',
+                  description:
+                      'Craftsman will know where you are automatically',
                 ),
                 const _OnboardingItem(
                   image: 'assets/animations/order-anywhere.json',
@@ -78,9 +79,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   title: 'Enable Your Location',
                   description:
                       'Choose your location to start finding the request around you',
-                  buttonLabel: 'USE MY LOCATION', 
+                  buttonLabel: 'USE MY LOCATION',
                   extraButton: GestureDetector(
-                    onTap: _navigateToLogin, 
+                    onTap: _navigateToLogin,
                     child: Text(
                       'Skip For Now',
                       style: GoogleFonts.poppins(
@@ -100,10 +101,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               left: 0,
               right: 0,
               child: TextButton(
-                onPressed: _navigateToLogin, 
+                onPressed: _navigateToLogin,
                 style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,  
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,  
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 child: Center(
                   child: Text(
@@ -111,7 +112,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     style: GoogleFonts.poppins(
                       fontSize: isSmallScreen ? 14 : 16,
                       fontWeight: FontWeight.w500,
-                      color: Colors.grey[600],  
+                      color: Colors.grey[600],
                     ),
                   ),
                 ),
@@ -210,8 +211,8 @@ class _OnboardingItem extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 18),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
                   child: Text(
                     buttonLabel!,
                     style: GoogleFonts.poppins(

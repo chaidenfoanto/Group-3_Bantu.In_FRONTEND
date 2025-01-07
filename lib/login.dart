@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/dashboard.dart';
-import 'package:shared_preferences/shared_preferences.dart'; 
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,7 +12,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isPasswordVisible = false; 
+  bool _isPasswordVisible = false;
 
   void _login() {
     final email = _emailController.text;
@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (email == 'user@example.com' && password == 'password') {
-        onLoginSuccess();
+      onLoginSuccess();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Your email or password is incorrect.')),
@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> saveLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', true); 
+    await prefs.setBool('isLoggedIn', true);
   }
 
   // Panggil fungsi ini setelah login berhasil
@@ -91,17 +91,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     prefixIcon: const Icon(Icons.email, color: Colors.black),
                     labelText: 'E-mail',
                     labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
+                    floatingLabelStyle:
+                        TextStyle(color: Colors.yellow.shade600),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
                       borderSide: const BorderSide(color: Colors.transparent),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: const BorderSide(color: Colors.transparent),  
+                      borderSide: const BorderSide(color: Colors.transparent),
                     ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 22),
                     filled: true,
                     fillColor: Colors.grey.shade200,
                   ),
@@ -113,12 +114,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 60,
                 child: TextField(
                   controller: _passwordController,
-                  obscureText: !_isPasswordVisible, 
+                  obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.lock, color: Colors.black),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -129,17 +132,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     labelText: 'Password',
                     labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
+                    floatingLabelStyle:
+                        TextStyle(color: Colors.yellow.shade600),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
                       borderSide: const BorderSide(color: Colors.transparent),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: const BorderSide(color: Colors.transparent),  
+                      borderSide: const BorderSide(color: Colors.transparent),
                     ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 22),
                     filled: true,
                     fillColor: Colors.grey.shade200,
                   ),

@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart'; 
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'onboarding_screen.dart';
-import 'login.dart'; 
+import 'login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,7 +13,8 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _opacityAnimation;
   late Animation<double> _scaleAnimation;
@@ -53,11 +54,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           pageBuilder: (context, animation, secondaryAnimation) =>
               const OnboardingScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(0.0, 1.0); 
-            const end = Offset.zero; 
-            const curve = Curves.easeOut; 
+            const begin = Offset(0.0, 1.0);
+            const end = Offset.zero;
+            const curve = Curves.easeOut;
 
-            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
             var offsetAnimation = animation.drive(tween);
 
             return SlideTransition(
@@ -65,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               child: child,
             );
           },
-          transitionDuration: const Duration(seconds: 1), 
+          transitionDuration: const Duration(seconds: 1),
         ),
       );
     } else {
@@ -82,9 +84,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       backgroundColor: const Color(0xFFFECE2E),
       body: Center(
         child: FadeTransition(
-          opacity: _opacityAnimation, 
+          opacity: _opacityAnimation,
           child: ScaleTransition(
-            scale: _scaleAnimation, 
+            scale: _scaleAnimation,
             child: Text(
               'Bantu.In',
               style: GoogleFonts.poppins(

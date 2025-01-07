@@ -13,13 +13,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
-  bool _isChecked = false; 
+  bool _isChecked = false;
   final _formKey = GlobalKey<FormState>();
 
   String _selectedCountryCode = '+62';
@@ -41,7 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Registration Success!')),
       );
-      Navigator.of(context).pushReplacementNamed('/login');  
+      Navigator.of(context).pushReplacementNamed('/login');
     }
   }
 
@@ -81,7 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
 
               const SizedBox(height: 40),
-              // Form 
+              // Form
               Form(
                 key: _formKey,
                 child: Column(
@@ -94,17 +95,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: InputDecoration(
                           labelText: 'Username',
                           labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
+                          floatingLabelStyle:
+                              TextStyle(color: Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: Colors.transparent),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: Colors.transparent),  
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                           ),
-                          prefixIcon: Icon(Icons.person, color: Colors.grey.shade600),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                          prefixIcon:
+                              Icon(Icons.person, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -125,17 +131,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: InputDecoration(
                           labelText: 'E-mail',
                           labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
+                          floatingLabelStyle:
+                              TextStyle(color: Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: Colors.transparent),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: Colors.transparent),  
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                           ),
-                          prefixIcon: Icon(Icons.email, color: Colors.grey.shade600),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                          prefixIcon:
+                              Icon(Icons.email, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -143,7 +154,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (value?.isEmpty ?? true) {
                             return 'Email cannot be empty';
                           }
-                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value!)) {
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                              .hasMatch(value!)) {
                             return 'Invalid email';
                           }
                           return null;
@@ -171,17 +183,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                           ),
                           labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
+                          floatingLabelStyle:
+                              TextStyle(color: Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: Colors.transparent),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: Colors.transparent),  
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                           ),
-                          prefixIcon: Icon(Icons.lock, color: Colors.grey.shade600),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                          prefixIcon:
+                              Icon(Icons.lock, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -213,22 +230,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             onPressed: () {
                               setState(() {
-                                _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                                _isConfirmPasswordVisible =
+                                    !_isConfirmPasswordVisible;
                               });
                             },
                           ),
                           labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
+                          floatingLabelStyle:
+                              TextStyle(color: Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: Colors.transparent),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: Colors.transparent),  
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                           ),
-                          prefixIcon: Icon(Icons.lock_outline, color: Colors.grey.shade600),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                          prefixIcon: Icon(Icons.lock_outline,
+                              color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -252,7 +275,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // Dropdown Bendera Negara
                         Container(
                           width: 80,
-                          height: 60, 
+                          height: 60,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
                             color: Colors.grey.shade200,
@@ -281,7 +304,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         Expanded(
                                           child: Text(
                                             country['name']!,
-                                            style: const TextStyle(fontSize: 14),
+                                            style:
+                                                const TextStyle(fontSize: 14),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
@@ -297,7 +321,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 selectedItemBuilder: (BuildContext context) {
                                   return _countries.map((country) {
                                     return Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           country['flag']!,
@@ -318,7 +343,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // Input Field Nomor Telepon
                         Expanded(
                           child: SizedBox(
-                            height: 60, 
+                            height: 60,
                             child: TextFormField(
                               controller: _mobileController,
                               decoration: InputDecoration(
@@ -330,17 +355,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 labelText: 'Mobile Number',
                                 labelStyle: const TextStyle(fontSize: 15),
-                                floatingLabelStyle: TextStyle(color: Colors.yellow.shade600),
+                                floatingLabelStyle:
+                                    TextStyle(color: Colors.yellow.shade600),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(14),
-                                  borderSide: const BorderSide(color: Colors.transparent),
+                                  borderSide: const BorderSide(
+                                      color: Colors.transparent),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(14),
-                                  borderSide: const BorderSide(color: Colors.transparent),
+                                  borderSide: const BorderSide(
+                                      color: Colors.transparent),
                                 ),
-                                prefixIcon: Icon(Icons.phone, color: Colors.grey.shade600),
-                                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                                prefixIcon: Icon(Icons.phone,
+                                    color: Colors.grey.shade600),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 14, horizontal: 22),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
                               ),
@@ -362,7 +392,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 20),
                     // Checkbox Terms & Conditions
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center, 
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
                           child: Checkbox(
@@ -372,17 +402,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 _isChecked = value ?? false;
                               });
                             },
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, 
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50), 
+                              borderRadius: BorderRadius.circular(50),
                             ),
                             side: const BorderSide(
-                              color: Colors.transparent, 
+                              color: Colors.transparent,
                               width: 2,
                             ),
-                            fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                            fillColor: WidgetStateProperty.resolveWith<Color>(
+                                (states) {
                               if (states.contains(WidgetState.selected)) {
-                                return Colors.yellow.shade600; // Fillcolor pas selected
+                                return Colors
+                                    .yellow.shade600; // Fillcolor pas selected
                               }
                               return Colors.grey.shade200; // Pas tdk
                             }),
@@ -394,11 +427,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             text: TextSpan(
                               text: 'I agree to ',
                               style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                // fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold
-                              ),
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  // fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold),
                               children: [
                                 TextSpan(
                                   text: "Bantu.In's Terms & Conditions",
@@ -407,18 +439,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     color: Colors.yellow.shade600,
                                   ),
                                   recognizer: TapGestureRecognizer()
-                                  ..onTap = () async {
-                                    final result = await showDialog<bool>(
-                                      context: context,
-                                      builder: (context) => const TermsConditionsDialog(),
-                                    );
+                                    ..onTap = () async {
+                                      final result = await showDialog<bool>(
+                                        context: context,
+                                        builder: (context) =>
+                                            const TermsConditionsDialog(),
+                                      );
 
-                                    if (result == true && !_isChecked) {
-                                      setState(() {
-                                        _isChecked = true; // Centang checkbox jika belum tercentang
-                                      });
-                                    }
-                                  },
+                                      if (result == true && !_isChecked) {
+                                        setState(() {
+                                          _isChecked =
+                                              true; // Centang checkbox jika belum tercentang
+                                        });
+                                      }
+                                    },
                                 ),
                               ],
                             ),
@@ -433,7 +467,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _isChecked ? _register : null, 
+                        onPressed: _isChecked ? _register : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.yellow.shade600,
                           foregroundColor: Colors.black,
@@ -459,5 +493,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
-
-

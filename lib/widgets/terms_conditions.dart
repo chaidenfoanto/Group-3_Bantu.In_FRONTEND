@@ -59,7 +59,10 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Definisi\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -71,7 +74,10 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Persyaratan Penggunaan\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -84,7 +90,10 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Kebijakan Pemesanan\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -98,7 +107,10 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Kebijakan Rating & Review\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -110,7 +122,10 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Kewajiban dan Tanggung Jawab\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -123,7 +138,8 @@ class TermsConditionsDialog extends StatelessWidget {
                               const WidgetSpan(
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(vertical: 16),
-                                  child: Divider(color: Colors.grey, thickness: 1),
+                                  child:
+                                      Divider(color: Colors.grey, thickness: 1),
                                 ),
                               ),
                               TextSpan(
@@ -135,18 +151,23 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Definisi\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
                               const TextSpan(
-                                text:
-                                    'Tukang: Penyedia jasa yang telah diverifikasi dan terdaftar di aplikasi Bantu.In.\n'
-                                    'Pengguna: Individu yang menggunakan aplikasi Bantu.In untuk memesan layanan Tukang.\n'
-                              ),
+                                  text:
+                                      'Tukang: Penyedia jasa yang telah diverifikasi dan terdaftar di aplikasi Bantu.In.\n'
+                                      'Pengguna: Individu yang menggunakan aplikasi Bantu.In untuk memesan layanan Tukang.\n'),
                               TextSpan(
                                 text: 'Persyaratan Pendaftaran\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -158,7 +179,10 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Kebijakan Penerimaan Pesanan\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -170,7 +194,10 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Kebijakan Rating Pengguna\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -182,7 +209,10 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Kewajiban dan Tanggung Jawab\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -194,23 +224,27 @@ class TermsConditionsDialog extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'Kebijakan History Pesanan\n',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
                               const TextSpan(
-                                text:
-                                    '1. Semua riwayat pesanan akan dicatat di aplikasi untuk referensi Tukang.\n'
-                                    '2. Tukang tidak diperbolehkan membagikan informasi pengguna yang tercatat di riwayat pesanan kepada pihak ketiga tanpa izin.\n'
-                              ),
+                                  text:
+                                      '1. Semua riwayat pesanan akan dicatat di aplikasi untuk referensi Tukang.\n'
+                                      '2. Tukang tidak diperbolehkan membagikan informasi pengguna yang tercatat di riwayat pesanan kepada pihak ketiga tanpa izin.\n'),
                               const WidgetSpan(
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(vertical: 16),
-                                  child: Divider(color: Colors.grey, thickness: 1),
+                                  child:
+                                      Divider(color: Colors.grey, thickness: 1),
                                 ),
                               ),
                               TextSpan(
-                                text: 'Ketentuan Umum (Berlaku untuk Pengguna dan Tukang)\n\n',
+                                text:
+                                    'Ketentuan Umum (Berlaku untuk Pengguna dan Tukang)\n\n',
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium
@@ -245,7 +279,8 @@ class TermsConditionsDialog extends StatelessWidget {
                         ),
                         child: const Text(
                           'Decline',
-                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -264,7 +299,8 @@ class TermsConditionsDialog extends StatelessWidget {
                         ),
                         child: const Text(
                           'Accept',
-                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
