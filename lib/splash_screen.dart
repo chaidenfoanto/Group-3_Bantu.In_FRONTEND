@@ -87,14 +87,25 @@ class _SplashScreenState extends State<SplashScreen>
           opacity: _opacityAnimation,
           child: ScaleTransition(
             scale: _scaleAnimation,
-            child: Text(
-              'Bantu.In',
-              style: GoogleFonts.poppins(
-                fontSize: MediaQuery.of(context).size.width * 0.07,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                color: Colors.black,
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/images/Logo-splashscreen.png',
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.width * 0.5,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Bantu.In',
+                  style: GoogleFonts.poppins(
+                    fontSize: MediaQuery.of(context).size.width * 0.07,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

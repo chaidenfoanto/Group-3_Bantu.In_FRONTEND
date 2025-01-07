@@ -66,6 +66,8 @@ flutter:
     - assets/images/login-image.png
     - assets/images/logo.png
     - assets/images/home-illustration.png
+    - assets/images/empty-order.png
+    - assets/images/Logo-splashscreen.png
     - assets/flags/us.png
     - assets/flags/indonesia.png
     - assets/flags/india.png
