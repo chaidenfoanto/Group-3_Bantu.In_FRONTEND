@@ -120,9 +120,9 @@ class TermsConditionsDialog extends StatelessWidget {
                                     '2. Kerugian atau kerusakan yang terjadi akibat kelalaian pengguna tidak menjadi tanggung jawab Bantu.In atau Tukang.\n'
                                     '3. Pengguna wajib menjaga etika selama berinteraksi dengan Tukang.\n',
                               ),
-                              WidgetSpan(
+                              const WidgetSpan(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
+                                  padding: EdgeInsets.symmetric(vertical: 16),
                                   child: Divider(color: Colors.grey, thickness: 1),
                                 ),
                               ),
@@ -203,9 +203,9 @@ class TermsConditionsDialog extends StatelessWidget {
                                     '1. Semua riwayat pesanan akan dicatat di aplikasi untuk referensi Tukang.\n'
                                     '2. Tukang tidak diperbolehkan membagikan informasi pengguna yang tercatat di riwayat pesanan kepada pihak ketiga tanpa izin.\n'
                               ),
-                              WidgetSpan(
+                              const WidgetSpan(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
+                                  padding: EdgeInsets.symmetric(vertical: 16),
                                   child: Divider(color: Colors.grey, thickness: 1),
                                 ),
                               ),

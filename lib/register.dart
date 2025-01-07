@@ -92,7 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: TextFormField(
                         controller: _nameController,
                         decoration: InputDecoration(
-                          labelText: 'Name',
+                          labelText: 'Username',
                           labelStyle: const TextStyle(fontSize: 15),
                           floatingLabelStyle: TextStyle(color:Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
@@ -110,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Name cannot be empty';
+                            return 'Username cannot be empty';
                           }
                           return null;
                         },

@@ -152,7 +152,6 @@ class _OnboardingItem extends StatelessWidget {
   final Widget? extraButton;
 
   const _OnboardingItem({
-    super.key,
     required this.image,
     required this.title,
     required this.description,

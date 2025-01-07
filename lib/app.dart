@@ -15,23 +15,33 @@ class BantuIn extends StatefulWidget {
 }
 
 class _BantuInAppState extends State<BantuIn> {
-  late Future<bool> _isFirstLaunch;
+  late Future<String> _initialScreen;
 
-  Future<bool> _checkFirstLaunch() async {
+  Future<String> _determineInitialScreen() async {
     final prefs = await SharedPreferences.getInstance();
+    
+    // Periksa apakah ini pertama kali pengguna meluncurkan aplikasi
     bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
 
     if (isFirstLaunch) {
-      prefs.setBool('isFirstLaunch', false);
+      await prefs.setBool('isFirstLaunch', false);
+      return 'splash'; // Jika pertama kali, arahkan ke SplashScreen
     }
 
-    return isFirstLaunch;
+    // Periksa apakah pengguna sudah login
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    if (isLoggedIn) {
+      return 'dashboard'; // Jika sudah login, arahkan ke Dashboard
+    } else {
+      return 'login'; // Jika belum login, arahkan ke LoginScreen
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    _isFirstLaunch = _checkFirstLaunch();
+    _initialScreen = _determineInitialScreen();
   }
 
   @override
@@ -58,20 +68,27 @@ class _BantuInAppState extends State<BantuIn> {
           labelSmall: TextStyle(fontFamily: 'Poppins', fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),
         ),
       ),
-      home: FutureBuilder<bool>(
-        future: _isFirstLaunch,
+      home: FutureBuilder<String>(
+        future: _initialScreen,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SplashScreen();
-          } else if (snapshot.hasData && snapshot.data == true) {
-            return const SplashScreen();
+            return const SplashScreen(); // Tampilkan SplashScreen saat menunggu
+          } else if (snapshot.hasData) {
+            switch (snapshot.data) {
+              case 'splash':
+                return const SplashScreen();
+              case 'dashboard':
+                return const DashboardScreen();
+              case 'login':
+              default:
+                return const LoginScreen();
+            }
           } else {
-            return const LoginScreen();
+            return const LoginScreen(); // Fallback ke LoginScreen
           }
         },
       ),
       routes: {
-        // '/': (context) => const SplashScreen(),
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),

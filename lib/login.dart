@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart'; 
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,15 +26,33 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (email == 'user@example.com' && password == 'password') {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const DashboardScreen()),
-      );
+        onLoginSuccess();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Your email or password is incorrect.')),
       );
     }
+  }
+
+  Future<void> saveLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true); 
+  }
+
+  // Panggil fungsi ini setelah login berhasil
+  void onLoginSuccess() {
+    saveLoginStatus();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const DashboardScreen()),
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose(); // Membersihkan controller email
+    _passwordController.dispose(); // Membersihkan controller password
+    super.dispose(); // Memastikan super class juga di-clean up
   }
 
   @override
