@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/dashboard.dart';
+import 'package:front_end/orders.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -21,12 +22,12 @@ class BottomNavBar extends StatelessWidget {
           MaterialPageRoute(builder: (context) => const DashboardScreen()),
         );
         break;
-      // case 1:
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => const OrdersScreen()),
-      //   );
-      //   break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const OrdersScreen()),
+        );
+        break;
       // case 2:
       //   Navigator.pushReplacement(
       //     context,
