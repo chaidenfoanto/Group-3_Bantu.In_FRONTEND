@@ -82,7 +82,7 @@ class _OrdersState extends State<OrdersScreen> {
         children: [
           // Ilustrasi gambar kosong
           Image.asset(
-            imagePath,
+      'assets/images/empty-order.png',
             height: 200, // Tinggi gambar
           ), // Ganti 'imagePath' dengan path gambar ilustrasi
           const SizedBox(height: 20),
