@@ -9,7 +9,6 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersState extends State<OrdersScreen> {
-
   @override
   Widget build(BuildContext context) {
     return navbar.BottomNavBar(
@@ -28,40 +27,53 @@ class _OrdersState extends State<OrdersScreen> {
             ),
           ),
           // Tab Bar untuk History, In Progress, Scheduled
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: DefaultTabController(
-              length: 3,
-              child: Column(
-                children: [
-                  const TabBar(
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.black45,
-                    indicatorColor: Color(0xFFFECE2E), // Warna kuning
-                    indicatorWeight: 3.0,
-                    tabs: [
-                      Tab(text: 'History'),
-                      Tab(text: 'In Progress'),
-                      Tab(text: 'Scheduled'),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 400, // Tinggi konten tab
-                    child: TabBarView(
-                      children: [
-                        // Tab: History
-                        _buildEmptyState(context, 'No orders yet!',
-                            'Start your order now', 'assets/images/Orders.png'),
-                        // Tab: In Progress
-                        _buildEmptyState(context, 'No orders in progress!',
-                            'Place an order now', 'assets/images/Orders.png'),
-                        // Tab: Scheduled
-                        _buildEmptyState(context, 'No scheduled orders!',
-                            'Plan your order now', 'assets/images/Orders.png'),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: DefaultTabController(
+                length: 3,
+                child: Column(
+                  children: [
+                    const TabBar(
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Colors.black45,
+                      indicatorColor: Color(0xFFFECE2E), // Warna kuning
+                      indicatorWeight: 3.0,
+                      tabs: [
+                        Tab(text: 'History'),
+                        Tab(text: 'In Progress'),
+                        Tab(text: 'Scheduled'),
                       ],
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          // Tab: History
+                          _buildEmptyState(
+                            context,
+                            'No orders yet!',
+                            'Start your order now',
+                            'assets/images/empty-order.png',
+                          ),
+                          // Tab: In Progress
+                          _buildEmptyState(
+                            context,
+                            'No orders in progress!',
+                            'Place an order now',
+                            'assets/images/empty-order.png',
+                          ),
+                          // Tab: Scheduled
+                          _buildEmptyState(
+                            context,
+                            'No scheduled orders!',
+                            'Plan your order now',
+                            'assets/images/empty-order.png',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -78,13 +90,12 @@ class _OrdersState extends State<OrdersScreen> {
   ) {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Ilustrasi gambar kosong
           Image.asset(
-      'assets/images/empty-order.png',
+            imagePath,
             height: 200, // Tinggi gambar
-          ), // Ganti 'imagePath' dengan path gambar ilustrasi
+          ),
           const SizedBox(height: 20),
           Text(
             title,
