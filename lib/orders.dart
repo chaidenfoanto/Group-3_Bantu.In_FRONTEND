@@ -12,7 +12,7 @@ class _OrdersState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return navbar.BottomNavBar(
-      currentIndex: 1, // Index untuk halaman Orders
+      currentIndex: 1, 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -34,11 +34,17 @@ class _OrdersState extends State<OrdersScreen> {
                 length: 3,
                 child: Column(
                   children: [
-                    const TabBar(
+                     TabBar(
+                      labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                       labelColor: Colors.black,
-                      unselectedLabelColor: Colors.black45,
+                      unselectedLabelColor: Colors.black,
                       indicatorColor: Color(0xFFFECE2E), // Warna kuning
                       indicatorWeight: 3.0,
+                      // unselectedLabelStyle: TextStyle( // Gaya teks untuk tab yang tidak aktif
+                      //   fontWeight: FontWeight.normal,
+                      // ),
                       tabs: [
                         Tab(text: 'History'),
                         Tab(text: 'In Progress'),
@@ -48,21 +54,21 @@ class _OrdersState extends State<OrdersScreen> {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          // Tab: History
+                          // Tab History
                           _buildEmptyState(
                             context,
                             'No orders yet!',
                             'Start your order now',
                             'assets/images/empty-order.png',
                           ),
-                          // Tab: In Progress
+                          // Tab In Progress
                           _buildEmptyState(
                             context,
                             'No orders in progress!',
                             'Place an order now',
                             'assets/images/empty-order.png',
                           ),
-                          // Tab: Scheduled
+                          // Tab Scheduled
                           _buildEmptyState(
                             context,
                             'No scheduled orders!',
@@ -94,7 +100,8 @@ class _OrdersState extends State<OrdersScreen> {
         children: [
           Image.asset(
             imagePath,
-            height: 200, // Tinggi gambar
+            height: 200,
+            fit: BoxFit.contain,
           ),
           const SizedBox(height: 20),
           Text(
@@ -106,6 +113,8 @@ class _OrdersState extends State<OrdersScreen> {
           const SizedBox(height: 8),
           Text(
             subtitle,
+            textAlign:
+                TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
