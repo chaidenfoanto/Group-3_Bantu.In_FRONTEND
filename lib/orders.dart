@@ -40,12 +40,12 @@ class _OrdersState extends State<OrdersScreen> {
                           ),
                       labelColor: Colors.black,
                       unselectedLabelColor: Colors.black,
-                      indicatorColor: Color(0xFFFECE2E), // Warna kuning
+                      indicatorColor: const Color(0xFFFECE2E), // Warna kuning
                       indicatorWeight: 3.0,
                       // unselectedLabelStyle: TextStyle( // Gaya teks untuk tab yang tidak aktif
                       //   fontWeight: FontWeight.normal,
                       // ),
-                      tabs: [
+                      tabs: const [
                         Tab(text: 'History'),
                         Tab(text: 'In Progress'),
                         Tab(text: 'Scheduled'),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/widgets/navbar.dart' as navbar;
+import 'package:url_launcher/url_launcher.dart'; 
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -124,7 +125,7 @@ class _DashboardState extends State<DashboardScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Pilih jenis AC anda!',
+          'Choose Your AC Type!',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
@@ -167,7 +168,7 @@ class _DashboardState extends State<DashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Belajar dikit yuk!',
+              'Learn something fun!',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -179,11 +180,42 @@ class _DashboardState extends State<DashboardScreen> {
             ),
           ],
         ),
-        Container(
-          height: 100,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.grey.shade300,
+        GestureDetector(
+          onTap: () async {
+            const youtubeUrl = 'https://www.youtube.com/watch?v=swaHYDu84mc';
+            if (await canLaunchUrl(Uri.parse(youtubeUrl))) {
+              await launchUrl(Uri.parse(youtubeUrl),
+                  mode: LaunchMode.externalApplication);
+            } else {
+              throw 'Unable to open the video';
+            }
+          },
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  'assets/images/thumbnail-edukasi.png',
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: Colors.black54,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.play_arrow,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            ],
           ),
         ),
       ],
