@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/widgets/navbar.dart' as navbar;
-import 'package:url_launcher/url_launcher.dart'; 
+import 'package:url_launcher/url_launcher.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -68,7 +69,7 @@ class _DashboardState extends State<DashboardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
-                    _buildEducationContainer(),
+                    _buildCarouselContainer(),
                     const SizedBox(height: 20),
                     _buildAcSelection(context),
                     const SizedBox(height: 20),
@@ -151,12 +152,34 @@ class _DashboardState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildEducationContainer() {
+  Widget _buildCarouselContainer() {
+    final List<String> imgList = [
+      'assets/images/Carousel-1.png',
+      'assets/images/Carousel-2.png',
+    ];
+
     return Container(
       height: 150,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.grey.shade300,
+      child: CarouselSlider(
+        options: CarouselOptions(
+          height: 150,
+          autoPlay: true,
+          autoPlayInterval: Duration(seconds: 3),
+          autoPlayAnimationDuration: Duration(milliseconds: 800),
+          enlargeCenterPage: true,
+          aspectRatio: 2.0,
+          viewportFraction: 1.0,
+        ),
+        items: imgList
+            .map((item) => ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    item,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                ))
+            .toList(),
       ),
     );
   }
@@ -168,7 +191,7 @@ class _DashboardState extends State<DashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Learn something fun!',
+              'Learn Something Fun!',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -205,14 +228,10 @@ class _DashboardState extends State<DashboardScreen> {
               Container(
                 height: 50,
                 width: 50,
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  shape: BoxShape.circle,
-                ),
                 child: const Icon(
                   Icons.play_arrow,
                   color: Colors.white,
-                  size: 30,
+                  size: 50,
                 ),
               ),
             ],
