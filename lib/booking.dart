@@ -4,6 +4,8 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({super.key});
@@ -13,11 +15,17 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  LatLng tukangPosition = LatLng(-5.150, 119.396); // Lokasi default "tukang"
-  LatLng markerPosition = LatLng(-5.150, 119.396); // Lokasi marker awal
+  LatLng tukangPosition = LatLng(-5.150, 119.396);
+  LatLng markerPosition = LatLng(-5.150, 119.396);
   TextEditingController addressController = TextEditingController();
-  String hintText = "Choose Your Location"; // Placeholder default
+  TextEditingController issueController = TextEditingController();
+  String hintText = "Choose Your Location";
   bool _isLoading = false;
+  int selectedTab = 0;
+  String selectedTime = "";
+  String selectedDate = "Choose a Date";
+  final Color orangeColor = const Color(0xFFFECE2E);
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -50,12 +58,12 @@ class _BookingScreenState extends State<BookingScreen> {
       );
 
       setState(() {
-        hintText = address; // Perbarui hintText dengan alamat
-        addressController.text = address; // Perbarui teks di TextField
+        hintText = address;
+        addressController.text = address;
       });
     } catch (e) {
       setState(() {
-        hintText = "Choose Your Location"; // Kembali ke default jika gagal
+        hintText = "Choose Your Location";
       });
     } finally {
       setState(() {
@@ -81,7 +89,7 @@ class _BookingScreenState extends State<BookingScreen> {
         throw Exception("Location permission is not granted by the user.");
       }
     } catch (e) {
-      throw Exception("Failed to obtain location: ${e.toString()}");
+      throw Exception("Failed to obtain location: \${e.toString()}");
     }
   }
 
@@ -94,13 +102,35 @@ class _BookingScreenState extends State<BookingScreen> {
 
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks[0];
-        return "${place.name}, ${place.street}, ${place.locality}";
+        return "\${place.name}, \${place.street}, \${place.locality}";
       } else {
         return "Address not found.";
       }
     } catch (e) {
-      throw Exception("Failed to retrieve address: ${e.toString()}");
+      throw Exception("Failed to retrieve address: \${e.toString()}");
     }
+  }
+
+  Future<void> _selectDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        selectedDate = DateFormat('dd MMM yyyy').format(pickedDate);
+      });
+    }
+  }
+
+  void _pickFromGallery() async {
+    await _picker.pickImage(source: ImageSource.gallery);
+  }
+
+  void _takePhoto() async {
+    await _picker.pickImage(source: ImageSource.camera);
   }
 
   @override
@@ -108,7 +138,6 @@ class _BookingScreenState extends State<BookingScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Widget Peta
           _isLoading
               ? const Center(child: CircularProgressIndicator())
               : FlutterMap(
@@ -123,8 +152,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   ),
                   children: [
                     TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: 'com.example.app',
                     ),
                     CurrentLocationLayer(
@@ -167,45 +195,48 @@ class _BookingScreenState extends State<BookingScreen> {
                     ),
                   ],
                 ),
-          // Widget Bar Atas
           Positioned(
-            top: 40,
+            top: 20,
+            left: 16,
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            top: 70,
             left: 16,
             right: 16,
-            child: Row(
+            child: Stack(
               children: [
-                Expanded(
-                  child: TextField(
-                    controller: addressController,
-                    decoration: InputDecoration(
-                      prefixIcon:
-                          const Icon(Icons.location_pin, color: Colors.red),
-                      hintText: hintText, // Alamat pengguna atau placeholder
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
-                      ),
+                Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+                TextField(
+                  controller: addressController,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.location_pin, color: Colors.red),
+                    hintText: hintText,
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
-                const SizedBox(width: 8.0),
-                const Icon(Icons.search, color: Colors.grey),
               ],
             ),
           ),
-          Positioned(
-            top: 40,
-            left: 16,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.black),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-          // Widget Panel Bawah
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -228,56 +259,204 @@ class _BookingScreenState extends State<BookingScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Column(
-                        children: [
-                          Text(
-                            'Order now',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.yellow[800],
+                      GestureDetector(
+                        onTap: () => setState(() => selectedTab = 0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Order now',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          Container(
-                            height: 4,
-                            width: 50,
-                            color: Colors.yellow[800],
-                            margin: const EdgeInsets.only(top: 4),
-                          ),
-                        ],
+                            if (selectedTab == 0)
+                              Container(
+                                height: 4,
+                                width: 60,
+                                color: orangeColor,
+                                margin: const EdgeInsets.only(top: 4),
+                              ),
+                          ],
+                        ),
                       ),
-                      Text(
-                        'Book first',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[500],
+                      GestureDetector(
+                        onTap: () => setState(() => selectedTab = 1),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Book first',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            if (selectedTab == 1)
+                              Container(
+                                height: 4,
+                                width: 60,
+                                color: orangeColor,
+                                margin: const EdgeInsets.only(top: 4),
+                              ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Image.asset('assets/images/order_now.png', height: 120),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.yellow[800],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    onPressed: () {
-                      // Logika pemesanan
-                      print('Order now pressed');
-                    },
-                    child: const Text(
-                      'Order',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ),
+                  selectedTab == 0
+                      ? Column(
+                          children: [
+                            Image.asset('assets/images/order_now.png', height: 120),
+                            const SizedBox(height: 8),
+                            const Text('Order now for an instant pick..', style: TextStyle(fontSize: 14)),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: orangeColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                              ),
+                              onPressed: () {
+                                print('Order now pressed');
+                              },
+                              child: const Text(
+                                'Order',
+                                style: TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "What's the issue?",
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            TextField(
+                              controller: issueController,
+                              decoration: InputDecoration(
+                                hintText: 'Describe your issue...',
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'When would you like to start the work?',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: _selectDate,
+                                  icon: const Icon(Icons.calendar_today, color: Colors.black),
+                                  label: Text(selectedDate, style: const TextStyle(color: Colors.black)),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.grey[300],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Wrap(
+                              spacing: 10,
+                              children: [
+                                for (var time in ['08.00', '10.00', '12.00', '14.00', '16.00', '18.00', '20.00', '22.00'])
+                                  ChoiceChip(
+                                    label: Text(time),
+                                    selected: selectedTime == time,
+                                    onSelected: (selected) {
+                                      setState(() {
+                                        selectedTime = selected ? time : "";
+                                      });
+                                    },
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey[300],
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    onPressed: _pickFromGallery,
+                                    child: const Text(
+                                      'Select from Gallery',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey[300],
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    onPressed: _takePhoto,
+                                    child: const Text(
+                                      'Take a Photo',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text(
+                                  'Total Cost',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Rp0',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange[700],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                              onPressed: () {},
+                              child: const Text(
+                                'Next',
+                                style: TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
                 ],
               ),
             ),

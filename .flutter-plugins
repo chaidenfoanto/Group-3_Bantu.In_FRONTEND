@@ -1,5 +1,9 @@
 # This is a generated file; do not edit or check into version control.
+file_selector_linux=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/file_selector_linux-0.9.3+2/
+file_selector_macos=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/file_selector_macos-0.9.4+2/
+file_selector_windows=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/file_selector_windows-0.9.3+3/
 flutter_compass=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/flutter_compass-0.8.1/
+flutter_plugin_android_lifecycle=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.24/
 geocoding=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geocoding-3.0.0/
 geocoding_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geocoding_android-3.3.1/
 geocoding_ios=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geocoding_ios-3.0.1/
@@ -8,6 +12,13 @@ geolocator_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geolocator_and
 geolocator_apple=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geolocator_apple-2.3.8+1/
 geolocator_web=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geolocator_web-4.1.1/
 geolocator_windows=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geolocator_windows-0.2.3/
+image_picker=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/image_picker-1.1.2/
+image_picker_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/image_picker_android-0.8.12+20/
+image_picker_for_web=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/image_picker_for_web-3.0.6/
+image_picker_ios=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/image_picker_ios-0.8.12+2/
+image_picker_linux=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/image_picker_linux-0.2.1+1/
+image_picker_macos=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/image_picker_macos-0.2.1+1/
+image_picker_windows=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/image_picker_windows-0.2.1+1/
 path_provider=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider-2.1.5/
 path_provider_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider_android-2.2.15/
 path_provider_foundation=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.1/
