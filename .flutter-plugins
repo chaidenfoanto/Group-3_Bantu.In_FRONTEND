@@ -1,12 +1,21 @@
 # This is a generated file; do not edit or check into version control.
+flutter_compass=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/flutter_compass-0.8.1/
+geocoding=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geocoding-3.0.0/
+geocoding_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geocoding_android-3.3.1/
+geocoding_ios=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geocoding_ios-3.0.1/
+geolocator=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geolocator-13.0.2/
+geolocator_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geolocator_android-4.6.1/
+geolocator_apple=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geolocator_apple-2.3.8+1/
+geolocator_web=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geolocator_web-4.1.1/
+geolocator_windows=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/geolocator_windows-0.2.3/
 path_provider=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider-2.1.5/
-path_provider_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider_android-2.2.12/
-path_provider_foundation=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.0/
+path_provider_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider_android-2.2.15/
+path_provider_foundation=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.1/
 path_provider_linux=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider_linux-2.2.1/
 path_provider_windows=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/path_provider_windows-2.3.0/
-shared_preferences=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/shared_preferences-2.3.3/
-shared_preferences_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/shared_preferences_android-2.3.3/
-shared_preferences_foundation=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.5.3/
+shared_preferences=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/shared_preferences-2.3.5/
+shared_preferences_android=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/shared_preferences_android-2.4.1/
+shared_preferences_foundation=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.5.4/
 shared_preferences_linux=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/shared_preferences_linux-2.4.1/
 shared_preferences_web=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/shared_preferences_web-2.4.2/
 shared_preferences_windows=/Users/chaidenfoanto/.pub-cache/hosted/pub.dev/shared_preferences_windows-2.4.1/

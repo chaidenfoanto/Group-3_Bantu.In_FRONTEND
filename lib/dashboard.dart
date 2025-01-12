@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/booking.dart';
 import 'package:front_end/widgets/navbar.dart' as navbar;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -126,7 +127,7 @@ class _DashboardState extends State<DashboardScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Choose Your AC Type!',
+          'Choose your AC type!',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
@@ -152,20 +153,53 @@ class _DashboardState extends State<DashboardScreen> {
     );
   }
 
+  Widget _buildAcOption(BuildContext context, String label, IconData icon) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const BookingScreen(), // Ganti dengan halaman booking Anda
+          ),
+        );
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: Colors.amber.shade100,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, color: Colors.amber),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
+      ),
+    );
+  }
+
+
   Widget _buildCarouselContainer() {
     final List<String> imgList = [
       'assets/images/Carousel-1.png',
       'assets/images/Carousel-2.png',
     ];
 
-    return Container(
+    return SizedBox(
       height: 150,
       child: CarouselSlider(
         options: CarouselOptions(
           height: 150,
           autoPlay: true,
-          autoPlayInterval: Duration(seconds: 3),
-          autoPlayAnimationDuration: Duration(milliseconds: 800),
+          autoPlayInterval: const Duration(seconds: 3),
+          autoPlayAnimationDuration: const Duration(milliseconds: 800),
           enlargeCenterPage: true,
           aspectRatio: 2.0,
           viewportFraction: 1.0,
@@ -191,7 +225,7 @@ class _DashboardState extends State<DashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Learn Something Fun!',
+              'Learn something fun!',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -225,7 +259,7 @@ class _DashboardState extends State<DashboardScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 50,
                 width: 50,
                 child: const Icon(
@@ -241,25 +275,4 @@ class _DashboardState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildAcOption(BuildContext context, String label, IconData icon) {
-    return Column(
-      children: [
-        Container(
-          height: 60,
-          width: 60,
-          decoration: BoxDecoration(
-            color: Colors.amber.shade100,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(icon, color: Colors.amber),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-      ],
-    );
-  }
 }
