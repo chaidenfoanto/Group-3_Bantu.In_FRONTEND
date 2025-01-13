@@ -139,27 +139,30 @@ class _DashboardState extends State<DashboardScreen> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            _buildAcOption(context, 'AC Split Wall', Icons.ac_unit),
-            _buildAcOption(context, 'AC Central', Icons.home_work_outlined),
-            _buildAcOption(context, 'AC Standing', Icons.airplay),
-            _buildAcOption(context, 'Smart AC', Icons.smartphone),
-            _buildAcOption(context, 'AC Window', Icons.window),
-            _buildAcOption(context, 'AC / DC', Icons.bolt),
-            _buildAcOption(context, 'AC VRV', Icons.hvac),
-            _buildAcOption(context, 'AC Duct', Icons.layers),
+            _buildAcOption(
+                context, 'AC Split Wall', 'assets/icons/ac_split_wall.png'),
+            _buildAcOption(
+                context, 'AC Central', 'assets/icons/ac_central.png'),
+            _buildAcOption(
+                context, 'AC Standing', 'assets/icons/ac_standing.png'),
+            _buildAcOption(context, 'Smart AC', 'assets/icons/smart_ac.png'),
+            _buildAcOption(context, 'AC Window', 'assets/icons/ac_window.png'),
+            _buildAcOption(context, 'AC Inverter', 'assets/icons/ac_inverter.png'),
+            _buildAcOption(context, 'AC VRV', 'assets/icons/ac_vrv.png'),
+            _buildAcOption(context, 'AC Duct', 'assets/icons/ac_duct.png'),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildAcOption(BuildContext context, String label, IconData icon) {
+  Widget _buildAcOption(BuildContext context, String label, String imagePath) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const BookingScreen(), // Ganti dengan halaman booking Anda
+            builder: (context) => const BookingScreen(),
           ),
         );
       },
@@ -169,10 +172,13 @@ class _DashboardState extends State<DashboardScreen> {
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-              color: Colors.amber.shade100,
+              color: Colors.white, // Warna background putih sesuai desain Figma
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(icon, color: Colors.amber),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0), // Padding untuk gambar
+              child: Image.asset(imagePath), // Menampilkan gambar kustom
+            ),
           ),
           const SizedBox(height: 4),
           Text(
@@ -184,7 +190,6 @@ class _DashboardState extends State<DashboardScreen> {
       ),
     );
   }
-
 
   Widget _buildCarouselContainer() {
     final List<String> imgList = [
@@ -259,10 +264,10 @@ class _DashboardState extends State<DashboardScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
                 width: 50,
-                child: const Icon(
+                child: Icon(
                   Icons.play_arrow,
                   color: Colors.white,
                   size: 50,
@@ -274,5 +279,4 @@ class _DashboardState extends State<DashboardScreen> {
       ],
     );
   }
-
 }

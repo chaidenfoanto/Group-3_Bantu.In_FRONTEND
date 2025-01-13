@@ -81,6 +81,14 @@ flutter:
     - assets/images/Carousel-1.png
     - assets/images/Carousel-2.png
     - assets/images/Logo-splashscreen.png
+    - assets/icons/ac_split_wall.png
+    - assets/icons/ac_central.png
+    - assets/icons/ac_duct.png
+    - assets/icons/ac_inverter.png
+    - assets/icons/ac_standing.png
+    - assets/icons/ac_vrv.png
+    - assets/icons/ac_window.png
+    - assets/icons/smart_ac.png
     - assets/flags/us.png
     - assets/flags/indonesia.png
     - assets/flags/india.png
