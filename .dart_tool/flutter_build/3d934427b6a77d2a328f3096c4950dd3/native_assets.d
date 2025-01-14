@@ -1,0 +1,1 @@
+ /Users/chaidenfoanto/Documents/UC/UC\ -\ Semester\ 3/Bantu.In/Group-3_Bantu.In_FRONTEND/.dart_tool/flutter_build/3d934427b6a77d2a328f3096c4950dd3/native_assets.yaml: 
