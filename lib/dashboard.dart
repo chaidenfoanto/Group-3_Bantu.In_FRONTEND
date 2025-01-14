@@ -147,7 +147,8 @@ class _DashboardState extends State<DashboardScreen> {
                 context, 'AC Standing', 'assets/icons/ac_standing.png'),
             _buildAcOption(context, 'Smart AC', 'assets/icons/smart_ac.png'),
             _buildAcOption(context, 'AC Window', 'assets/icons/ac_window.png'),
-            _buildAcOption(context, 'AC Inverter', 'assets/icons/ac_inverter.png'),
+            _buildAcOption(
+                context, 'AC Inverter', 'assets/icons/ac_inverter.png'),
             _buildAcOption(context, 'AC VRV', 'assets/icons/ac_vrv.png'),
             _buildAcOption(context, 'AC Duct', 'assets/icons/ac_duct.png'),
           ],
@@ -172,12 +173,22 @@ class _DashboardState extends State<DashboardScreen> {
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-              color: Colors.white, // Warna background putih sesuai desain Figma
+              color: Colors.white, 
               borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors
+                      .black26, 
+                  offset: Offset(0, 0), 
+                  blurRadius:
+                      6, 
+                  spreadRadius: 1, 
+                ),
+              ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0), // Padding untuk gambar
-              child: Image.asset(imagePath), // Menampilkan gambar kustom
+              padding: const EdgeInsets.all(8.0), 
+              child: Image.asset(imagePath), 
             ),
           ),
           const SizedBox(height: 4),

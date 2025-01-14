@@ -7,10 +7,10 @@ class CustomMapWidget extends StatelessWidget {
   final Function(LatLng) onMarkerTap;
 
   const CustomMapWidget({
-    Key? key,
+    super.key,
     required this.markerPosition,
     required this.onMarkerTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
