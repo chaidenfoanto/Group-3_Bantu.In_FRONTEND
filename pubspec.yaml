@@ -47,6 +47,7 @@ dependencies:
   geolocator: ^13.0.2
   geocoding: ^3.0.0
   image_picker: ^1.1.2
+  image_picker_platform_interface: ^2.10.1
 
 dev_dependencies:
   flutter_test:
@@ -90,6 +91,8 @@ flutter:
     - assets/icons/ac_vrv.png
     - assets/icons/ac_window.png
     - assets/icons/smart_ac.png
+    - assets/icons/cleaning_up.png
+    - assets/icons/recharge_freon.png
     - assets/flags/us.png
     - assets/flags/indonesia.png
     - assets/flags/india.png
