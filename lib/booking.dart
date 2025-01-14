@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:front_end/widgets/map_service.dart';
 import 'package:front_end/widgets/custom_map_widget.dart';
 
@@ -12,11 +13,12 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen>
     with SingleTickerProviderStateMixin {
-  LatLng markerPosition = LatLng(-5.150, 119.396);
+  LatLng markerPosition = const LatLng(-5.150, 119.396);
   String hintText = "Perumahan Purakucing, Jalan Johar...";
   final MapService mapService = MapService();
   late TabController _tabController;
   String selectedService = '';
+  final PanelController _panelController = PanelController();
 
   @override
   void initState() {
@@ -86,9 +88,10 @@ class _BookingScreenState extends State<BookingScreen>
             ),
           ),
 
+          // Tombol Back
           Positioned(
-            top: 320,
             left: 16,
+            bottom: MediaQuery.of(context).size.height * 0.65 + 32,
             child: CircleAvatar(
               backgroundColor: Colors.white,
               child: IconButton(
@@ -100,305 +103,235 @@ class _BookingScreenState extends State<BookingScreen>
             ),
           ),
 
-          // Panel Tab "Order now" dan "Book first"
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              padding: const EdgeInsets.only(bottom: 16),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 8),
-                  TabBar(
-                    labelStyle:
-                        Theme.of(context).textTheme.labelLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                    controller: _tabController,
-                    labelColor: theme.secondaryHeaderColor,
-                    unselectedLabelColor: Colors.grey,
-                    indicatorColor: theme.primaryColor,
-                    indicatorWeight: 2,
-                    tabs: const [
-                      Tab(text: "Order now"),
-                      Tab(text: "Book first"),
-                    ],
-                  ),
-                  SizedBox(
-                    height: _tabController.index == 1 ? 450 : 400,
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        // Tab "Order now"
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "What service do you need?",
-                                style: theme.textTheme.titleMedium!
-                                    .copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 16),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  _serviceOption(
-                                    context,
-                                    icon: Icons.ac_unit, // Placeholder
-                                    label: "Recharge Freon",
-                                    isSelected:
-                                        selectedService == "Recharge Freon",
-                                    onTap: () {
-                                      setState(() {
-                                        selectedService = "Recharge Freon";
-                                      });
-                                    },
-                                  ),
-                                  _serviceOption(
-                                    context,
-                                    icon:
-                                        Icons.cleaning_services, // Placeholder
-                                    label: "Cleaning Up",
-                                    isSelected:
-                                        selectedService == "Cleaning Up",
-                                    onTap: () {
-                                      setState(() {
-                                        selectedService = "Cleaning Up";
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 32),
-                              Text(
-                                "Order now for an instant pick..",
-                                style: theme.textTheme.bodyMedium,
-                                textAlign: TextAlign.center,
-                              ),
-                              const Spacer(),
-                              const Divider(
-                                thickness: 1, // Ketebalan garis
-                                color: Colors.black26, // Warna garis
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Total Cost",
-                                        style: theme.textTheme.bodyMedium,
-                                      ),
-                                      Text(
-                                        "Rp0",
-                                        style: theme.textTheme.titleMedium!
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: theme.primaryColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      "Order",
-                                      style: theme.textTheme.labelLarge!
-                                          .copyWith(color: Colors.black),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Tab "Book first"
-                        SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Center(
-                                  child: Text(
-                                    "What service do you need?",
-                                    style: theme.textTheme.titleMedium!
-                                        .copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    _serviceOption(
-                                      context,
-                                      icon: Icons.ac_unit, // Placeholder
-                                      label: "Recharge Freon",
-                                      isSelected:
-                                          selectedService == "Recharge Freon",
-                                      onTap: () {
-                                        setState(() {
-                                          selectedService = "Recharge Freon";
-                                        });
-                                      },
-                                    ),
-                                    _serviceOption(
-                                      context,
-                                      icon: Icons
-                                          .cleaning_services, // Placeholder
-                                      label: "Cleaning Up",
-                                      isSelected:
-                                          selectedService == "Cleaning Up",
-                                      onTap: () {
-                                        setState(() {
-                                          selectedService = "Cleaning Up";
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 32),
-                                Text(
-                                  "What's the issue?",
-                                  style: theme.textTheme.titleMedium!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 16),
-                                TextField(
-                                  decoration: InputDecoration(
-                                    hintText:
-                                        "Type here to let the technician know your problem.?",
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                  ),
-                                  maxLines: 3,
-                                ),
-                                const SizedBox(height: 32),
-                                Text(
-                                  "When would you like to start the work?",
-                                  style: theme.textTheme.titleMedium!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 16),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    "Choose a Date",
-                                    style: theme.textTheme.bodySmall,
-                                  ),
-                                ),
-                                const SizedBox(height: 32),
-                                Center(
-                                  child: Text(
-                                    "Upload a photo of your issue.",
-                                    style: theme.textTheme.titleMedium!
-                                        .copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    ElevatedButton.icon(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.photo),
-                                      label: Text(
-                                        "Select from Gallery",
-                                        style: theme.textTheme.bodySmall,
-                                      ),
-                                    ),
-                                    ElevatedButton.icon(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.camera),
-                                      label: Text(
-                                        "Take a Photo",
-                                        style: theme.textTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 32),
-                                const Divider(
-                                  thickness: 1, // Ketebalan garis
-                                  color: Colors.black26, // Warna garis
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Total Cost",
-                                            style: theme.textTheme.bodyMedium),
-                                        Text("Rp0",
-                                            style: theme.textTheme.titleMedium!
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                      ],
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: theme.primaryColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                      ),
-                                      child: Text("Order",
-                                          style: theme.textTheme.labelLarge!
-                                              .copyWith(color: Colors.black)),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+          // Panel Sliding
+          SlidingUpPanel(
+            controller: _panelController,
+            minHeight: 60, // Tinggi minimum agar tab terlihat
+            maxHeight: MediaQuery.of(context).size.height * 0.65,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
+            panelBuilder: (scrollController) => _buildSlidingPanel(
+              theme,
+              scrollController,
+            ),
+            body: Container(), // Tetap kosong karena peta ada di belakang
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSlidingPanel(ThemeData theme, ScrollController scrollController) {
+    return Column(
+      children: [
+        // Tab Bar
+        TabBar(
+          labelStyle: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+          controller: _tabController,
+          labelColor: theme.secondaryHeaderColor,
+          unselectedLabelColor: Colors.grey,
+          indicatorColor: theme.primaryColor,
+          indicatorWeight: 2,
+          tabs: const [
+            Tab(text: "Order now"),
+            Tab(text: "Book first"),
+          ],
+        ),
+
+        // Isi Konten Tab Bar
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              // Tab "Order now"
+              _buildOrderNowContent(theme),
+
+              // Tab "Book first"
+              _buildBookFirstContent(theme),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildOrderNowContent(ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "What service do you need?",
+            style: theme.textTheme.titleMedium!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _serviceOption(
+                context,
+                icon: Icons.ac_unit, // Placeholder
+                label: "Recharge Freon",
+                isSelected: selectedService == "Recharge Freon",
+                onTap: () {
+                  setState(() {
+                    selectedService = "Recharge Freon";
+                  });
+                },
+              ),
+              _serviceOption(
+                context,
+                icon: Icons.cleaning_services, // Placeholder
+                label: "Cleaning Up",
+                isSelected: selectedService == "Cleaning Up",
+                onTap: () {
+                  setState(() {
+                    selectedService = "Cleaning Up";
+                  });
+                },
+              ),
+            ],
+          ),
+          const Spacer(),
+          _buildCostAndOrderButton(theme),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBookFirstContent(ThemeData theme) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Text(
+                "What service do you need?",
+                style: theme.textTheme.titleMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _serviceOption(
+                  context,
+                  icon: Icons.ac_unit, // Placeholder
+                  label: "Recharge Freon",
+                  isSelected: selectedService == "Recharge Freon",
+                  onTap: () {
+                    setState(() {
+                      selectedService = "Recharge Freon";
+                    });
+                  },
+                ),
+                _serviceOption(
+                  context,
+                  icon: Icons.cleaning_services, // Placeholder
+                  label: "Cleaning Up",
+                  isSelected: selectedService == "Cleaning Up",
+                  onTap: () {
+                    setState(() {
+                      selectedService = "Cleaning Up";
+                    });
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            Text(
+              "What's the issue?",
+              style: theme.textTheme.titleMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Describe your issue...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 32),
+            Text(
+              "When would you like to start the work?",
+              style: theme.textTheme.titleMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text("Choose a Date"),
+            ),
+            const SizedBox(height: 32),
+            Center(
+              child: Text(
+                "Upload a photo of your issue.",
+                style: theme.textTheme.titleMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.photo),
+                  label: const Text("Gallery"),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.camera),
+                  label: const Text("Camera"),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            _buildCostAndOrderButton(theme),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCostAndOrderButton(ThemeData theme) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Total Cost", style: theme.textTheme.bodyMedium),
+            Text(
+              "Rp0",
+              style: theme.textTheme.titleMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: theme.primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          child: const Text("Order"),
+        ),
+      ],
     );
   }
 

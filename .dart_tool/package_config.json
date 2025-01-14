@@ -488,6 +488,12 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "sliding_up_panel",
+      "rootUri": "file:///Users/chaidenfoanto/.pub-cache/hosted/pub.dev/sliding_up_panel-2.0.0+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "source_span",
       "rootUri": "file:///Users/chaidenfoanto/.pub-cache/hosted/pub.dev/source_span-1.10.0",
       "packageUri": "lib/",
@@ -632,7 +638,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-01-13T13:03:48.741174Z",
+  "generated": "2025-01-14T14:14:52.285102Z",
   "generator": "pub",
   "generatorVersion": "3.5.4",
   "flutterRoot": "file:///Users/chaidenfoanto/Downloads/flutter",
