@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:front_end/widgets/map_service.dart';
@@ -52,53 +53,40 @@ class _BookingScreenState extends State<BookingScreen>
 
   // Fungsi untuk memilih gambar atau video
   Future<void> _pickMedia(ImageSource source, {required bool isCamera}) async {
-    final pickedFile = isCamera
-        ? await _picker.pickVideo(source: source) // Mengambil video dari kamera
-        : await _picker.pickImage(source: source); // Mengambil gambar dari kamera
+  if (isCamera) {
+    // Pilih media dari kamera (foto atau video)
+    final XFile? pickedFile = await _picker.pickVideo(source: source);
 
     if (pickedFile != null) {
       setState(() {
-        if (pickedFile.path.endsWith('.mp4')) {
-          _videos!.add(pickedFile); // Menambahkan video
-        } else {
-          _images!.add(pickedFile); // Menambahkan gambar
+        _videos!.add(pickedFile);
+      });
+    } else {
+      final XFile? pickedImage = await _picker.pickImage(source: source);
+      if (pickedImage != null) {
+        setState(() {
+          _images!.add(pickedImage);
+        });
+      }
+    }
+  } else {
+    // Pilih media dari galeri
+    final List<XFile>? pickedFiles = await _picker.pickMultiImage();
+
+    if (pickedFiles != null) {
+      setState(() {
+        for (var file in pickedFiles) {
+          if (file.path.endsWith('.mp4') || file.path.endsWith('.mov')) {
+            _videos!.add(file);
+          } else {
+            _images!.add(file);
+          }
         }
       });
     }
   }
+}
 
-  // Fungsi untuk memilih sumber media
-  Future<void> _showMediaPickerDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Pilih Sumber Media"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: const Text("Ambil Foto / Video"),
-                leading: const Icon(Icons.camera_alt),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickMedia(ImageSource.camera, isCamera: true); // Ambil dari kamera
-                },
-              ),
-              ListTile(
-                title: const Text("Pilih dari Galeri"),
-                leading: const Icon(Icons.photo),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickMedia(ImageSource.gallery, isCamera: false); // Ambil dari galeri
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
   @override
   void dispose() {
@@ -325,10 +313,10 @@ class _BookingScreenState extends State<BookingScreen>
             ),
             const SizedBox(height: 16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                  onPressed: () => _showMediaPickerDialog(),
+                  onPressed: () => _pickMedia(ImageSource.gallery, isCamera: false),
                   icon: const Icon(Icons.photo_library),
                   label: Text(
                     "Select from Gallery",
@@ -336,10 +324,10 @@ class _BookingScreenState extends State<BookingScreen>
                   ),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () => _showMediaPickerDialog(),
+                  onPressed: () => _pickMedia(ImageSource.camera, isCamera: true),
                   icon: const Icon(Icons.camera_alt),
                   label: Text(
-                    "Take a Photo",
+                    "Open Camera",
                     style: theme.textTheme.bodySmall,
                   ),
                 ),
@@ -356,18 +344,91 @@ class _BookingScreenState extends State<BookingScreen>
   }
 
   Widget _buildMediaPreview() {
-    if (_images!.isNotEmpty || _videos!.isNotEmpty) {
-      return Column(
-        children: [
-          if (_images!.isNotEmpty)
-            ..._images!.map((image) => Image.file(File(image.path))),
-          if (_videos!.isNotEmpty)
-            ..._videos!.map((video) => Text('Video: ${video.path}')),
-        ],
-      );
-    }
-    return const Text("No media selected.");
-  }
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      if (_images != null && _images!.isNotEmpty)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Images:",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: _images!.map((image) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    kIsWeb ? image.path : File(image.path).path,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      if (_videos != null && _videos!.isNotEmpty)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20),
+            Text(
+              "Videos:",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: _videos!.map((video) {
+                return GestureDetector(
+                  onTap: () {
+                    // Tambahkan logika untuk memutar video (jika diperlukan)
+                  },
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: kIsWeb
+                            ? Image.network(
+                                video.path,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.file(
+                                File(video.path),
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                      Positioned(
+                        top: 35,
+                        left: 35,
+                        child: Icon(
+                          Icons.play_circle_fill,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+    ],
+  );
+}
+
 
   Widget _buildCostAndOrderButton(ThemeData theme) {
     return Column(

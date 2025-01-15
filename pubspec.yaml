@@ -48,6 +48,7 @@ dependencies:
   geocoding: ^3.0.0
   image_picker: ^1.1.2
   image_picker_platform_interface: ^2.10.1
+  file_picker: ^5.3.3
 
 dev_dependencies:
   flutter_test:
