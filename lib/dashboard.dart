@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/booking.dart';
 import 'package:front_end/widgets/navbar.dart' as navbar;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -12,6 +12,29 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardState extends State<DashboardScreen> {
+  late YoutubePlayerController _youtubeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _youtubeController = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(
+        'https://www.youtube.com/embed/swaHYDu84mc?si=65IwETTpcY9gkWMk',
+      )!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+        enableCaption: true,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _youtubeController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return navbar.BottomNavBar(
@@ -133,7 +156,6 @@ class _DashboardState extends State<DashboardScreen> {
                 color: Colors.black87,
               ),
         ),
-        const SizedBox(height: 12),
         GridView.count(
           crossAxisCount: 4,
           shrinkWrap: true,
@@ -251,42 +273,29 @@ class _DashboardState extends State<DashboardScreen> {
             ),
           ],
         ),
-        GestureDetector(
-          onTap: () async {
-            const youtubeUrl = 'https://www.youtube.com/watch?v=swaHYDu84mc';
-            if (await canLaunchUrl(Uri.parse(youtubeUrl))) {
-              await launchUrl(
-                Uri.parse(youtubeUrl),
-                mode: LaunchMode
-                    .externalApplication, // atau LaunchMode.platformDefault
-              );
-            } else {
-              debugPrint('Unable to open the video');
-            }
-          },
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  'assets/images/thumbnail-edukasi.png',
-                  height: 150,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-                width: 50,
-                child: Icon(
-                  Icons.play_arrow,
-                  color: Colors.white,
-                  size: 50,
-                ),
-              ),
-            ],
+        YoutubePlayerBuilder(
+          player: YoutubePlayer(
+            controller: _youtubeController,
+            showVideoProgressIndicator: true,
           ),
+          builder: (context, player) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0, 4),
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: player,
+              ),
+            );
+          },
         ),
       ],
     );
