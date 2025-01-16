@@ -173,22 +173,20 @@ class _DashboardState extends State<DashboardScreen> {
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-              color: Colors.white, 
+              color: Colors.white,
               borderRadius: BorderRadius.circular(8),
               boxShadow: const [
                 BoxShadow(
-                  color: Colors
-                      .black26, 
-                  offset: Offset(0, 0), 
-                  blurRadius:
-                      6, 
-                  spreadRadius: 1, 
+                  color: Colors.black26,
+                  offset: Offset(0, 0),
+                  blurRadius: 6,
+                  spreadRadius: 1,
                 ),
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0), 
-              child: Image.asset(imagePath), 
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(imagePath),
             ),
           ),
           const SizedBox(height: 4),
@@ -257,10 +255,13 @@ class _DashboardState extends State<DashboardScreen> {
           onTap: () async {
             const youtubeUrl = 'https://www.youtube.com/watch?v=swaHYDu84mc';
             if (await canLaunchUrl(Uri.parse(youtubeUrl))) {
-              await launchUrl(Uri.parse(youtubeUrl),
-                  mode: LaunchMode.externalApplication);
+              await launchUrl(
+                Uri.parse(youtubeUrl),
+                mode: LaunchMode
+                    .externalApplication, // atau LaunchMode.platformDefault
+              );
             } else {
-              throw 'Unable to open the video';
+              debugPrint('Unable to open the video');
             }
           },
           child: Stack(
