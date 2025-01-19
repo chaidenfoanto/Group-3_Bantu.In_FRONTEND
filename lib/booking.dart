@@ -26,8 +26,8 @@ class _BookingScreenState extends State<BookingScreen>
   final PanelController _panelController = PanelController();
   final ValueNotifier<double> panelPositionNotifier = ValueNotifier(0);
   final ImagePicker _picker = ImagePicker();
-  List<XFile>? _images = [];  // Menyimpan daftar gambar
-  List<XFile>? _videos = [];  // Menyimpan daftar video
+  List<XFile>? _images = []; // Menyimpan daftar gambar
+  List<XFile>? _videos = []; // Menyimpan daftar video
 
   @override
   void initState() {
@@ -53,40 +53,39 @@ class _BookingScreenState extends State<BookingScreen>
 
   // Fungsi untuk memilih gambar atau video
   Future<void> _pickMedia(ImageSource source, {required bool isCamera}) async {
-  if (isCamera) {
-    // Pilih media dari kamera (foto atau video)
-    final XFile? pickedFile = await _picker.pickVideo(source: source);
+    if (isCamera) {
+      // Pilih media dari kamera (foto atau video)
+      final XFile? pickedFile = await _picker.pickVideo(source: source);
 
-    if (pickedFile != null) {
-      setState(() {
-        _videos!.add(pickedFile);
-      });
-    } else {
-      final XFile? pickedImage = await _picker.pickImage(source: source);
-      if (pickedImage != null) {
+      if (pickedFile != null) {
         setState(() {
-          _images!.add(pickedImage);
+          _videos!.add(pickedFile);
+        });
+      } else {
+        final XFile? pickedImage = await _picker.pickImage(source: source);
+        if (pickedImage != null) {
+          setState(() {
+            _images!.add(pickedImage);
+          });
+        }
+      }
+    } else {
+      // Pilih media dari galeri
+      final List<XFile>? pickedFiles = await _picker.pickMultiImage();
+
+      if (pickedFiles != null) {
+        setState(() {
+          for (var file in pickedFiles) {
+            if (file.path.endsWith('.mp4') || file.path.endsWith('.mov')) {
+              _videos!.add(file);
+            } else {
+              _images!.add(file);
+            }
+          }
         });
       }
     }
-  } else {
-    // Pilih media dari galeri
-    final List<XFile>? pickedFiles = await _picker.pickMultiImage();
-
-    if (pickedFiles != null) {
-      setState(() {
-        for (var file in pickedFiles) {
-          if (file.path.endsWith('.mp4') || file.path.endsWith('.mov')) {
-            _videos!.add(file);
-          } else {
-            _images!.add(file);
-          }
-        }
-      });
-    }
   }
-}
-
 
   @override
   void dispose() {
@@ -298,71 +297,110 @@ class _BookingScreenState extends State<BookingScreen>
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {},
-              icon: const Icon(Icons.calendar_month_outlined),
-                    label: Text("Take a Photo",
-                        style: theme.textTheme.bodySmall),
+              icon: const Icon(
+                Icons.calendar_month_outlined,
+                color: Colors.black,
+              ),
+              label: Text("Take a Photo", style: theme.textTheme.bodySmall),
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: Colors.white,
+                side: const BorderSide(color: Colors.black, width: 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              ),
             ),
             const SizedBox(height: 16),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  "08:00 - 10:00",
-                  "10:00 - 12:00",
-                  "12:00 - 14:00",
-                  "14:00 - 16:00",
-                  "16:00 - 18:00",
-                  "18:00 - 20:00",
-                  "20:00 - 22:00",
-                  "22:00 - 24:00",
-                ].map((timeSlot) {
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      backgroundColor: Colors.white,
-                      side: BorderSide(color: Colors.grey.shade300),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                "08:00 - 10:00",
+                "10:00 - 12:00",
+                "12:00 - 14:00",
+                "14:00 - 16:00",
+                "16:00 - 18:00",
+                "18:00 - 20:00",
+                "20:00 - 22:00",
+                "22:00 - 24:00",
+              ].map((timeSlot) {
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    onPressed: () {},
-                    child: Text(
-                      timeSlot,
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 32),
+                    backgroundColor: Colors.white,
+                    side: BorderSide(color: Colors.grey.shade300),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    timeSlot,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 32),
 
-              // Bagian Upload Foto
-              Center(
-                child: Text(
-                  "Upload a photo of your issue.",
-                  style: theme.textTheme.titleMedium!
-                      .copyWith(fontWeight: FontWeight.bold),
+            // Bagian Upload Foto
+            Center(
+              child: Text(
+                "Upload a photo of your issue.",
+                style: theme.textTheme.titleMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () =>
+                      _pickMedia(ImageSource.gallery, isCamera: false),
+                  icon: const Icon(
+                    Icons.photo_library,
+                    color: Colors.black,
+                  ),
+                  label: Text("Select from Gallery",
+                      style: theme.textTheme.bodySmall),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Colors.white,
+                    side: const BorderSide(color: Colors.black),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 16),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () => _pickMedia(ImageSource.gallery, isCamera: false),
-                    icon: const Icon(Icons.photo_library),
-                    label: Text("Select from Gallery",
-                        style: theme.textTheme.bodySmall),
+                ElevatedButton.icon(
+                  onPressed: () =>
+                      _pickMedia(ImageSource.camera, isCamera: true),
+                  icon: const Icon(
+                    Icons.camera_alt,
+                    color: Colors.black,
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () => _pickMedia(ImageSource.camera, isCamera: true),
-                    icon: const Icon(Icons.camera_alt),
-                    label: Text("Take a Photo",
-                        style: theme.textTheme.bodySmall),
+                  label: Text("Take a Photo", style: theme.textTheme.bodySmall),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Colors.white,
+                    side: const BorderSide(color: Colors.black, width: 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 16),
                   ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              _buildMediaPreview(),
-              const SizedBox(height: 32),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _buildMediaPreview(),
+            const SizedBox(height: 32),
             _buildCostAndOrderButton(theme),
           ],
         ),
@@ -371,91 +409,90 @@ class _BookingScreenState extends State<BookingScreen>
   }
 
   Widget _buildMediaPreview() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      if (_images != null && _images!.isNotEmpty)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Images:",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: _images!.map((image) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    kIsWeb ? image.path : File(image.path).path,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
-      if (_videos != null && _videos!.isNotEmpty)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            Text(
-              "Videos:",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: _videos!.map((video) {
-                return GestureDetector(
-                  onTap: () {
-                    // Tambahkan logika untuk memutar video (jika diperlukan)
-                  },
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: kIsWeb
-                            ? Image.network(
-                                video.path,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.file(
-                                File(video.path),
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                      Positioned(
-                        top: 35,
-                        left: 35,
-                        child: Icon(
-                          Icons.play_circle_fill,
-                          color: Colors.white,
-                          size: 30,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_images != null && _images!.isNotEmpty)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Images:",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: _images!.map((image) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      kIsWeb ? image.path : File(image.path).path,
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+        if (_videos != null && _videos!.isNotEmpty)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+              Text(
+                "Videos:",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: _videos!.map((video) {
+                  return GestureDetector(
+                    onTap: () {
+                      // Tambahkan logika untuk memutar video (jika diperlukan)
+                    },
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: kIsWeb
+                              ? Image.network(
+                                  video.path,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.file(
+                                  File(video.path),
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
-    ],
-  );
-}
-
+                        Positioned(
+                          top: 35,
+                          left: 35,
+                          child: Icon(
+                            Icons.play_circle_fill,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
 
   Widget _buildCostAndOrderButton(ThemeData theme) {
     return Column(
