@@ -28,7 +28,7 @@ class _BantuInAppState extends State<BantuIn> {
       return 'splash'; // kalau pertama kali, arahkan ke SplashScreen
     }
 
-    // periksa apakah user sudah login
+    // periksa user sudah login blum
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
     if (isLoggedIn) {

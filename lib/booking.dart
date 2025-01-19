@@ -296,46 +296,73 @@ class _BookingScreenState extends State<BookingScreen>
                   .copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: () {},
-              child: Text(
-                "Choose a Date",
-                style: theme.textTheme.bodySmall,
-              ),
-            ),
-            const SizedBox(height: 32),
-            Center(
-              child: Text(
-                "Upload a photo of your issue.",
-                style: theme.textTheme.titleMedium!
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
+              icon: const Icon(Icons.calendar_month_outlined),
+                    label: Text("Take a Photo",
+                        style: theme.textTheme.bodySmall),
             ),
             const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () => _pickMedia(ImageSource.gallery, isCamera: false),
-                  icon: const Icon(Icons.photo_library),
-                  label: Text(
-                    "Select from Gallery",
-                    style: theme.textTheme.bodySmall,
-                  ),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  "08:00 - 10:00",
+                  "10:00 - 12:00",
+                  "12:00 - 14:00",
+                  "14:00 - 16:00",
+                  "16:00 - 18:00",
+                  "18:00 - 20:00",
+                  "20:00 - 22:00",
+                  "22:00 - 24:00",
+                ].map((timeSlot) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      backgroundColor: Colors.white,
+                      side: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      timeSlot,
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 32),
+
+              // Bagian Upload Foto
+              Center(
+                child: Text(
+                  "Upload a photo of your issue.",
+                  style: theme.textTheme.titleMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () => _pickMedia(ImageSource.camera, isCamera: true),
-                  icon: const Icon(Icons.camera_alt),
-                  label: Text(
-                    "Open Camera",
-                    style: theme.textTheme.bodySmall,
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () => _pickMedia(ImageSource.gallery, isCamera: false),
+                    icon: const Icon(Icons.photo_library),
+                    label: Text("Select from Gallery",
+                        style: theme.textTheme.bodySmall),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            _buildMediaPreview(),
-            const SizedBox(height: 32),
+                  ElevatedButton.icon(
+                    onPressed: () => _pickMedia(ImageSource.camera, isCamera: true),
+                    icon: const Icon(Icons.camera_alt),
+                    label: Text("Take a Photo",
+                        style: theme.textTheme.bodySmall),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              _buildMediaPreview(),
+              const SizedBox(height: 32),
             _buildCostAndOrderButton(theme),
           ],
         ),
