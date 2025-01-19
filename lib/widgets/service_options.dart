@@ -5,10 +5,10 @@ class ServiceOptions extends StatelessWidget {
   final Function(String) onServiceSelected;
 
   const ServiceOptions({
-    Key? key,
+    super.key,
     required this.selectedService,
     required this.onServiceSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
