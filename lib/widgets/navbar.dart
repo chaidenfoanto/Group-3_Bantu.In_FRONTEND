@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front_end/dashboard.dart';
 import 'package:front_end/orders.dart';
 import 'package:front_end/chat.dart';
+import 'package:front_end/profile.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -41,12 +42,12 @@ class BottomNavBar extends StatelessWidget {
           MaterialPageRoute(builder: (context) => const ChatScreen()),
         );
         break;
-      // case 4:
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => const ProfileScreen()),
-      //   );
-      //   break;
+      case 4:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
+        );
+        break;
     }
   }
 
