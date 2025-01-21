@@ -47,6 +47,7 @@ class _BantuInAppState extends State<BantuIn> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Bantu.In',
       theme: ThemeData(
         primaryColor: const Color(0xFFFECE2E), 

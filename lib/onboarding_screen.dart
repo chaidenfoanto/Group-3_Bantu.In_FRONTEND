@@ -208,7 +208,7 @@ class _OnboardingItem extends StatelessWidget {
                     permission = await Geolocator.requestPermission();
                     if (permission == LocationPermission.denied) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Location permission is required to continue")),
+                        const SnackBar(content: Text("Location permission is required to continue")),
                       );
                       return;
                     }

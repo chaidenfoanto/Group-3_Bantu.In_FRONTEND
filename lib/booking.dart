@@ -26,8 +26,8 @@ class _BookingScreenState extends State<BookingScreen>
   final PanelController _panelController = PanelController();
   final ValueNotifier<double> panelPositionNotifier = ValueNotifier(0);
   final ImagePicker _picker = ImagePicker();
-  List<XFile>? _images = []; // Menyimpan daftar gambar
-  List<XFile>? _videos = []; // Menyimpan daftar video
+  final List<XFile>? _images = []; // Menyimpan daftar gambar
+  final List<XFile>? _videos = []; // Menyimpan daftar video
 
   @override
   void initState() {
@@ -71,9 +71,9 @@ class _BookingScreenState extends State<BookingScreen>
       }
     } else {
       // Pilih media dari galeri
-      final List<XFile>? pickedFiles = await _picker.pickMultiImage();
+      final List<XFile> pickedFiles = await _picker.pickMultiImage();
 
-      if (pickedFiles != null) {
+      if (pickedFiles.isNotEmpty) {
         setState(() {
           for (var file in pickedFiles) {
             if (file.path.endsWith('.mp4') || file.path.endsWith('.mov')) {
@@ -139,7 +139,7 @@ class _BookingScreenState extends State<BookingScreen>
             builder: (context, child) {
               final double maxPanelHeight =
                   MediaQuery.of(context).size.height * 0.65;
-              final double minPanelHeight = 60;
+              const double minPanelHeight = 60;
               final double panelHeight = panelPositionNotifier.value *
                       (maxPanelHeight - minPanelHeight) +
                   minPanelHeight;
@@ -412,19 +412,19 @@ class _BookingScreenState extends State<BookingScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (_images != null && _images!.isNotEmpty)
+        if (_images != null && _images.isNotEmpty)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Images:",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: _images!.map((image) {
+                children: _images.map((image) {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
@@ -438,20 +438,20 @@ class _BookingScreenState extends State<BookingScreen>
               ),
             ],
           ),
-        if (_videos != null && _videos!.isNotEmpty)
+        if (_videos != null && _videos.isNotEmpty)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 "Videos:",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: _videos!.map((video) {
+                children: _videos.map((video) {
                   return GestureDetector(
                     onTap: () {
                       // Tambahkan logika untuk memutar video (jika diperlukan)
@@ -474,7 +474,7 @@ class _BookingScreenState extends State<BookingScreen>
                                   fit: BoxFit.cover,
                                 ),
                         ),
-                        Positioned(
+                        const Positioned(
                           top: 35,
                           left: 35,
                           child: Icon(
@@ -498,7 +498,7 @@ class _BookingScreenState extends State<BookingScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Divider(
+        const Divider(
           thickness: 1,
           color: Colors.black26,
         ),

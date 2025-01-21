@@ -6,7 +6,7 @@ import 'package:front_end/widgets/navbar.dart' as navbar;
 import 'package:front_end/widgets/terms_conditions.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();

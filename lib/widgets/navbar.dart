@@ -68,19 +68,19 @@ class BottomNavBar extends StatelessWidget {
         ),
         child: BottomNavigationBar(
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.yellow.shade600,
+          selectedItemColor: const Color(0xFFFECE2E),
           unselectedItemColor: Colors.black87,
           currentIndex: currentIndex,
           type: BottomNavigationBarType.fixed,
           onTap: (index) => _onItemTapped(context, index),
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Home'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.receipt_long), label: 'Orders'),
+                icon: Icon(Icons.receipt_long_rounded), label: 'Orders'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.school), label: 'Education'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+                icon: Icon(Icons.school_rounded), label: 'Education'),
+            BottomNavigationBarItem(icon: Icon(Icons.chat_rounded), label: 'Chat'),
+            BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: 'Profile'),
           ],
         ),
       ),
