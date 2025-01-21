@@ -28,6 +28,8 @@ class _BookingScreenState extends State<BookingScreen>
   final ImagePicker _picker = ImagePicker();
   final List<XFile>? _images = []; // Menyimpan daftar gambar
   final List<XFile>? _videos = []; // Menyimpan daftar video
+  DateTime? selectedDate;
+  String? selectedTimeSlot;
 
   @override
   void initState() {
@@ -51,10 +53,8 @@ class _BookingScreenState extends State<BookingScreen>
     }
   }
 
-  // Fungsi untuk memilih gambar atau video
   Future<void> _pickMedia(ImageSource source, {required bool isCamera}) async {
     if (isCamera) {
-      // Pilih media dari kamera (foto atau video)
       final XFile? pickedFile = await _picker.pickVideo(source: source);
 
       if (pickedFile != null) {
@@ -70,7 +70,6 @@ class _BookingScreenState extends State<BookingScreen>
         }
       }
     } else {
-      // Pilih media dari galeri
       final List<XFile> pickedFiles = await _picker.pickMultiImage();
 
       if (pickedFiles.isNotEmpty) {
@@ -93,6 +92,29 @@ class _BookingScreenState extends State<BookingScreen>
     super.dispose();
   }
 
+  // Fungsi untuk memilih tanggal
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+      });
+    }
+  }
+
+  // Fungsi untuk memilih jam
+  void _selectTimeSlot(String timeSlot) {
+    setState(() {
+      selectedTimeSlot = selectedTimeSlot == timeSlot ? null : timeSlot;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -100,7 +122,6 @@ class _BookingScreenState extends State<BookingScreen>
     return Scaffold(
       body: Stack(
         children: [
-          // Peta
           CustomMapWidget(
             markerPosition: markerPosition,
             onMarkerTap: (point) {
@@ -109,8 +130,6 @@ class _BookingScreenState extends State<BookingScreen>
               });
             },
           ),
-
-          // Input Lokasi di atas peta
           Positioned(
             top: 30,
             left: 16,
@@ -132,8 +151,6 @@ class _BookingScreenState extends State<BookingScreen>
               ),
             ),
           ),
-
-          // Tombol Back yang dinamis
           AnimatedBuilder(
             animation: panelPositionNotifier,
             builder: (context, child) {
@@ -160,7 +177,6 @@ class _BookingScreenState extends State<BookingScreen>
               );
             },
           ),
-
           SlidingUpPanel(
             controller: _panelController,
             minHeight: 60,
@@ -203,7 +219,6 @@ class _BookingScreenState extends State<BookingScreen>
             Tab(text: "Book first"),
           ],
         ),
-        // Isi Konten Tab Bar
         Expanded(
           child: TabBarView(
             controller: _tabController,
@@ -295,57 +310,104 @@ class _BookingScreenState extends State<BookingScreen>
                   .copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.calendar_month_outlined,
-                color: Colors.black,
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              width: double.infinity, // Membuat lebar Container memenuhi layar
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: Colors.grey.shade300), // Garis di sekeliling
+                borderRadius: BorderRadius.circular(10), // Sudut membulat
               ),
-              label: Text("Choose a Date", style: theme.textTheme.bodySmall),
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                backgroundColor: Colors.white,
-                side: const BorderSide(color: Colors.black, width: 1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                "08:00 - 10:00",
-                "10:00 - 12:00",
-                "12:00 - 14:00",
-                "14:00 - 16:00",
-                "16:00 - 18:00",
-                "18:00 - 20:00",
-                "20:00 - 22:00",
-                "22:00 - 24:00",
-              ].map((timeSlot) {
-                return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Tombol DatePicker
+                  ElevatedButton.icon(
+                    onPressed: () => _selectDate(context),
+                    icon: const Icon(
+                      Icons.calendar_month_outlined,
+                      color: Colors.black,
                     ),
-                    backgroundColor: Colors.white,
-                    side: BorderSide(color: Colors.grey.shade300),
+                    label: Text(
+                      selectedDate == null
+                          ? "Choose a Date"
+                          : "${selectedDate!.toLocal()}".split(' ')[0],
+                      style: theme.textTheme.bodySmall,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: Colors.white,
+                      side: const BorderSide(color: Colors.black, width: 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 16),
+                    ),
                   ),
-                  onPressed: () {},
-                  child: Text(
-                    timeSlot,
-                    style: theme.textTheme.bodyMedium,
+                  const SizedBox(
+                      height: 16), // Jarak antara DatePicker dan grid waktu
+                  // Grid Waktu
+                  GridView.builder(
+                    itemCount: 8, // Total slot waktu
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Jumlah kolom dalam grid (2 kolom)
+                      crossAxisSpacing: 8, // Jarak horizontal antar elemen
+                      mainAxisSpacing: 8, // Jarak vertikal antar elemen
+                      childAspectRatio:
+                          4.0, // Rasio aspek untuk tombol agar seragam
+                    ),
+                    shrinkWrap: true, // Agar grid tidak memenuhi seluruh layar
+                    physics:
+                        const NeverScrollableScrollPhysics(), // Non-scrollable
+                    itemBuilder: (context, index) {
+                      final timeSlots = [
+                        "08:00 - 10:00",
+                        "10:00 - 12:00",
+                        "12:00 - 14:00",
+                        "14:00 - 16:00",
+                        "16:00 - 18:00",
+                        "18:00 - 20:00",
+                        "20:00 - 22:00",
+                        "22:00 - 24:00",
+                      ];
+                      final timeSlot = timeSlots[index];
+                      return SizedBox(
+                        height: 30, // Tinggi tombol tetap 30
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            backgroundColor: selectedTimeSlot == timeSlot
+                                ? const Color(0xFFFECE2E)
+                                : Colors.white,
+                            side: BorderSide(
+                              color: selectedTimeSlot == timeSlot
+                                  ? const Color(0xFFFECE2E)
+                                  : Colors.grey.shade300,
+                            ),
+                            padding: EdgeInsets
+                                .zero, // Menghilangkan padding internal tombol
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedTimeSlot = timeSlot;
+                            });
+                          },
+                          child: Text(
+                            timeSlot,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              }).toList(),
+                ],
+              ),
             ),
             const SizedBox(height: 32),
-
-            // Bagian Upload Foto
             Center(
               child: Text(
                 "Upload a photo of your issue.",
@@ -505,29 +567,23 @@ class _BookingScreenState extends State<BookingScreen>
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Total Cost", style: theme.textTheme.bodyMedium),
-                Text(
-                  "Rp0",
-                  style: theme.textTheme.titleMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            Text(
+              "Rp 250.000",
+              style: theme.textTheme.bodyLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // Aksi untuk memesan
+              },
+              child: const Text("Order Now"),
               style: ElevatedButton.styleFrom(
+                elevation: 0,
                 backgroundColor: theme.primaryColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text("Order",
-                  style: theme.textTheme.titleMedium!
-                      .copyWith(fontWeight: FontWeight.bold)),
             ),
           ],
         ),
