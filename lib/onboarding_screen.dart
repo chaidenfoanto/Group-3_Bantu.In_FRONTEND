@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
+import 'package:shared_preferences/shared_preferences.dart'; 
+import 'package:geolocator/geolocator.dart';
 
 import 'package:front_end/login.dart';
 
@@ -200,8 +201,33 @@ class _OnboardingItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: ElevatedButton(
-                onPressed: () {
-                  // Kalau mau tmbh action pas di pencet use my location
+                onPressed: () async {
+                  // Memeriksa dan meminta izin lokasi
+                  LocationPermission permission = await Geolocator.checkPermission();
+                  if (permission == LocationPermission.denied) {
+                    permission = await Geolocator.requestPermission();
+                    if (permission == LocationPermission.denied) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Location permission is required to continue")),
+                      );
+                      return;
+                    }
+                  }
+
+                  // Mendapatkan lokasi terkini
+                  Position position = await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.high,
+                  );
+
+                  // Menyimpan lokasi awal ke SharedPreferences
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setDouble('latitude', position.latitude);
+                  await prefs.setDouble('longitude', position.longitude);
+
+                  // Navigasi ke halaman login
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFECE2E),

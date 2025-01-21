@@ -301,7 +301,7 @@ class _BookingScreenState extends State<BookingScreen>
                 Icons.calendar_month_outlined,
                 color: Colors.black,
               ),
-              label: Text("Take a Photo", style: theme.textTheme.bodySmall),
+              label: Text("Choose a Date", style: theme.textTheme.bodySmall),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: Colors.white,
