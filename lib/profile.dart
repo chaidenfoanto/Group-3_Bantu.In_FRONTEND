@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:front_end/widgets/navbar.dart' as navbar;
 import 'package:front_end/widgets/terms_conditions.dart';
+import 'package:front_end/login.dart'; // Import halaman login
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -18,27 +21,125 @@ class _ProfilePageState extends State<ProfilePage> {
   File? _imageFile; // File untuk menyimpan gambar yang dipilih
   final ImagePicker _picker = ImagePicker(); // Inisialisasi ImagePicker
 
-  // Fungsi untuk membuka kamera
-  Future<void> _pickImageFromCamera() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.camera);
+  String? userName;
+  String? userEmail;
+  String? userPhone;
+  String? userPhoto;
+  String? userPasswordConfirmation;
 
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
+  @override
+  void initState() {
+    super.initState();
+    fetchUserProfile();
+  }
+
+  Future<void> fetchUserProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
+
+    if (token == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No token found, please login again.')),
+      );
+      return;
+    }
+
+    final url = Uri.parse('http://192.168.205.50:8000/api/user-profile'); // Sesuaikan URL
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        setState(() {
+          userName = data['name'];
+          userEmail = data['email'];
+          userPhone = data['no_hp'];
+          userPhoto = data['foto_diri'];
+          userPasswordConfirmation = data['password_confirmation'];
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to fetch user profile: ${data['message']}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to connect to server. Please try again.')),
+      );
     }
   }
 
-  // Fungsi untuk membuka galeri
-  Future<void> _pickImageFromGallery() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImageFromCamera() async {
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
+      await _uploadImage(_imageFile!);
+    }
+  }
+
+  Future<void> _pickImageFromGallery() async {
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+      await _uploadImage(_imageFile!);
+    }
+  }
+
+  Future<void> _uploadImage(File imageFile) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
+
+    if (token == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No token found, please login again.')),
+      );
+      return;
+    }
+
+    final url = Uri.parse('http://192.168.205.50:8000/api/updatefotouser'); // Sesuaikan URL
+
+    try {
+      var request = http.MultipartRequest('PATCH', url);
+      request.headers['Authorization'] = 'Bearer $token';
+      request.files.add(await http.MultipartFile.fromPath('foto_diri', imageFile.path));
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.bytesToString();
+        final data = jsonDecode(responseData);
+
+        setState(() {
+          userPhoto = data['data']['foto_diri_url'];
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(data['message'])),
+        );
+      } else {
+        final responseData = await response.stream.bytesToString();
+        final data = jsonDecode(responseData);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to upload image: ${data['message']}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to connect to server. Please try again.')),
+      );
     }
   }
 
@@ -70,6 +171,50 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       },
     );
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
+
+    if (token == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No token found, please login again.')),
+      );
+      return;
+    }
+
+    final url = Uri.parse('http://192.168.205.50:8000/api/logoutuser'); // Sesuaikan URL
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Hapus token dari SharedPreferences
+        await prefs.remove('access_token');
+        await prefs.setBool('isLoggedIn', false);
+
+        // Arahkan pengguna ke halaman login
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          (Route<dynamic> route) => false,
+        );
+      } else {
+        final data = jsonDecode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to logout: ${data['message']}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to connect to server. Please try again.')),
+      );
+    }
   }
 
   @override
@@ -121,9 +266,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.white,
-                        backgroundImage:
-                            _imageFile != null ? FileImage(_imageFile!) : null,
-                        child: _imageFile == null
+                        backgroundImage: _imageFile != null
+                            ? FileImage(_imageFile!)
+                            : userPhoto != null
+                                ? NetworkImage(userPhoto!)
+                                : null,
+                        child: _imageFile == null && userPhoto == null
                             ? const Icon(
                                 Icons.person,
                                 size: 60,
@@ -151,12 +299,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "chaidenfoanto",
+                    userName ?? "Loading...",
                     style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "+6289731469826",
+                    userPhone ?? "Loading...",
                     style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -196,7 +344,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                             Text(
-                              "chaidenfoanto@gmail.com",
+                              userEmail ?? "Loading...",
                               style: theme.textTheme.bodyMedium,
                             ),
                           ],
@@ -220,7 +368,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               Text(
                                 isPasswordVisible
-                                    ? userPassword
+                                    ? userPasswordConfirmation ?? "************"
                                     : "************",
                                 style: theme.textTheme.bodyMedium,
                               ),
@@ -279,12 +427,15 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               leading: const Icon(Icons.phone, color: Colors.black),
               title: Text(
-                "Contact us",
+                "Log out",
                 style: theme.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                logout();
+              },
             ),
           ],
         ),
