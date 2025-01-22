@@ -560,30 +560,36 @@ class _BookingScreenState extends State<BookingScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Divider(
+        Divider(
           thickness: 1,
           color: Colors.black26,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "Rp 250.000",
-              style: theme.textTheme.bodyLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Total Cost", style: theme.textTheme.bodyMedium),
+                Text(
+                  "Rp0",
+                  style: theme.textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
             ElevatedButton(
-              onPressed: () {
-                // Aksi untuk memesan
-              },
-              child: const Text("Order Now"),
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
-                elevation: 0,
                 backgroundColor: theme.primaryColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(30),
                 ),
               ),
+              child: Text("Order",
+                  style: theme.textTheme.titleMedium!
+                      .copyWith(fontWeight: FontWeight.bold)),
             ),
           ],
         ),

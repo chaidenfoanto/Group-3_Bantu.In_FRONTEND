@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:front_end/dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,10 +17,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
 
-  void _login() {
-    final email = _emailController.text;
-    final password = _passwordController.text;
+  void _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
 
+    // Cek jika email atau password kosong
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Email and Password cannot be empty')),
@@ -25,13 +29,36 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    if (email == 'user@example.com' && password == 'password') {
-      onLoginSuccess();
-    } else {
+    final url = Uri.parse('http://192.168.205.117:8000/api/login'); // Sesuaikan URL
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['status'] == true) {
+        final token = data['user']['access_token'];
+        await _saveToken(token);
+        onLoginSuccess();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Your email or password is incorrect.')),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Your email or password is incorrect.')),
+        const SnackBar(
+            content: Text('Failed to connect to server. Please try again.')),
       );
     }
+  }
+
+  Future<void> _saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('access_token', token);
   }
 
   Future<void> saveLoginStatus() async {
