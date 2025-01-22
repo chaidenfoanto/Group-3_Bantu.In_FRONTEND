@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/dashboard.dart';
 import 'package:front_end/orders.dart';
+import 'package:front_end/education.dart';
 import 'package:front_end/chat.dart';
 import 'package:front_end/profile.dart';
 
@@ -30,12 +31,12 @@ class BottomNavBar extends StatelessWidget {
           MaterialPageRoute(builder: (context) => const OrdersScreen()),
         );
         break;
-      // case 2:
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => const EducationScreen()),
-      //   );
-      //   break;
+      case 2:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const EducationScreen()),
+        );
+        break;
       case 3:
         Navigator.pushReplacement(
           context,
