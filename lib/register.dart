@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:front_end/widgets/terms_conditions.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -13,13 +15,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
-
   bool _isChecked = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -30,20 +30,79 @@ class _RegisterScreenState extends State<RegisterScreen> {
     {'code': '+91', 'name': 'India', 'flag': 'assets/flags/india.png'},
   ];
 
-  @override
-  void dispose() {
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
+  Future<void> _register() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      try {
+        // Show loading indicator
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return const Center(child: CircularProgressIndicator());
+          },
+        );
+
+        // Format phone number for +62
+        String phoneNumber = _mobileController.text;
+        if (_selectedCountryCode == '+62' && phoneNumber.startsWith('0')) {
+          phoneNumber = phoneNumber.substring(1);
+        }
+        final fullPhoneNumber = _selectedCountryCode + phoneNumber;
+
+        // Make API call
+        final response = await http.post(
+          Uri.parse('http://192.168.205.117:8000/api/regists'), // Adjust URL as needed
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'name': _nameController.text,
+            'email': _emailController.text,
+            'password': _passwordController.text,
+            'password_confirmation': _confirmPasswordController.text,
+            'no_hp': fullPhoneNumber,
+          }),
+        );
+
+        // Pop loading dialog
+        Navigator.pop(context);
+
+        if (response.statusCode == 201) {
+          // Registration successful
+          final responseData = jsonDecode(response.body);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(responseData['message'])),
+          );
+          Navigator.of(context).pushReplacementNamed('/login');
+        } else {
+          // Registration failed
+          final errorData = jsonDecode(response.body);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorData['message'] ?? 'Registration failed'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        // Handle network/other errors
+        Navigator.pop(context); // Hide loading indicator
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
-  void _register() {
-    if (_formKey.currentState?.validate() ?? false) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registration Success!')),
-      );
-      Navigator.of(context).pushReplacementNamed('/login');
-    }
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _mobileController.dispose();
+    super.dispose();
   }
 
   @override
@@ -80,14 +139,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 40),
-              // Form
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    // Nama
+                    // Username field
                     SizedBox(
                       height: 60,
                       child: TextFormField(
@@ -95,22 +152,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: InputDecoration(
                           labelText: 'Username',
                           labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle:
-                              TextStyle(color: Colors.yellow.shade600),
+                          floatingLabelStyle: TextStyle(color: Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
-                          prefixIcon:
-                              Icon(Icons.person, color: Colors.grey.shade600),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 22),
+                          prefixIcon: Icon(Icons.person, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -123,7 +175,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    // Email
+                    // Email field
                     SizedBox(
                       height: 60,
                       child: TextFormField(
@@ -131,22 +183,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: InputDecoration(
                           labelText: 'E-mail',
                           labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle:
-                              TextStyle(color: Colors.yellow.shade600),
+                          floatingLabelStyle: TextStyle(color: Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
-                          prefixIcon:
-                              Icon(Icons.email, color: Colors.grey.shade600),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 22),
+                          prefixIcon: Icon(Icons.email, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
@@ -154,8 +201,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (value?.isEmpty ?? true) {
                             return 'Email cannot be empty';
                           }
-                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                              .hasMatch(value!)) {
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value!)) {
                             return 'Invalid email';
                           }
                           return null;
@@ -163,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    // Password
+                    // Password field
                     SizedBox(
                       height: 60,
                       child: TextFormField(
@@ -172,9 +218,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           labelText: 'Password',
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                             ),
                             onPressed: () {
                               setState(() {
@@ -183,26 +227,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                           ),
                           labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle:
-                              TextStyle(color: Colors.yellow.shade600),
+                          floatingLabelStyle: TextStyle(color: Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
-                          prefixIcon:
-                              Icon(Icons.lock, color: Colors.grey.shade600),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 22),
+                          prefixIcon: Icon(Icons.lock, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
-                        obscureText: true && !_isPasswordVisible,
+                        obscureText: !_isPasswordVisible,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Password cannot be empty';
@@ -215,7 +254,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    // Confirm Password
+                    // Confirm Password field
                     SizedBox(
                       height: 60,
                       child: TextFormField(
@@ -224,38 +263,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           labelText: 'Confirm Password',
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _isConfirmPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                              _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
                             ),
                             onPressed: () {
                               setState(() {
-                                _isConfirmPasswordVisible =
-                                    !_isConfirmPasswordVisible;
+                                _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
                               });
                             },
                           ),
                           labelStyle: const TextStyle(fontSize: 15),
-                          floatingLabelStyle:
-                              TextStyle(color: Colors.yellow.shade600),
+                          floatingLabelStyle: TextStyle(color: Colors.yellow.shade600),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
+                            borderSide: const BorderSide(color: Colors.transparent),
                           ),
-                          prefixIcon: Icon(Icons.lock_outline,
-                              color: Colors.grey.shade600),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 22),
+                          prefixIcon: Icon(Icons.lock_outline, color: Colors.grey.shade600),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                           filled: true,
                           fillColor: Colors.grey.shade200,
                         ),
-                        obscureText: true && !_isConfirmPasswordVisible,
+                        obscureText: !_isConfirmPasswordVisible,
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
                             return 'Confirm password cannot be empty';
@@ -268,11 +299,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    // Mobile Phone
+                    // Phone number field with country code
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Dropdown Bendera Negara
                         Container(
                           width: 80,
                           height: 60,
@@ -304,8 +334,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         Expanded(
                                           child: Text(
                                             country['name']!,
-                                            style:
-                                                const TextStyle(fontSize: 14),
+                                            style: const TextStyle(fontSize: 14),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
@@ -321,8 +350,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 selectedItemBuilder: (BuildContext context) {
                                   return _countries.map((country) {
                                     return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           country['flag']!,
@@ -340,7 +368,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        // Input Field Nomor Telepon
                         Expanded(
                           child: SizedBox(
                             height: 60,
@@ -355,22 +382,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 labelText: 'Mobile Number',
                                 labelStyle: const TextStyle(fontSize: 15),
-                                floatingLabelStyle:
-                                    TextStyle(color: Colors.yellow.shade600),
+                                floatingLabelStyle: TextStyle(color: Colors.yellow.shade600),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(14),
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
+                                  borderSide: const BorderSide(color: Colors.transparent),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(14),
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
+                                  borderSide: const BorderSide(color: Colors.transparent),
                                 ),
-                                prefixIcon: Icon(Icons.phone,
-                                    color: Colors.grey.shade600),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 14, horizontal: 22),
+                                prefixIcon: Icon(Icons.phone, color: Colors.grey.shade600),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
                               ),
@@ -390,7 +412,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    // Checkbox Terms & Conditions
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
