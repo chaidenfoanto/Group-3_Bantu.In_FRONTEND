@@ -1,6 +1,8 @@
 # Frontend Bantu.In
 
-<img src="assets/images/logo.png" alt="Logo Bantu.In" width="200" align="center">
+<p align="center">
+  <img src="assets/images/logo.png" alt="Logo Bantu.In" width="500">
+</p>
 
 **Bantu.In** adalah aplikasi yang mempermudah masyarakat dalam menemukan layanan jasa tukang profesional dengan mudah, cepat, dan terpercaya. Proyek ini hadir sebagai solusi untuk mengatasi berbagai tantangan, seperti kesulitan menemukan tukang yang kompeten, kendala ketidaksesuaian jadwal, hingga ketidaknyamanan akibat janji tukang yang sering tidak ditepati.
 
@@ -34,7 +36,9 @@ Berikut adalah fitur-fitur unggulan yang ditawarkan oleh **Bantu.In**:
 
 Berikut adalah cuplikan antarmuka aplikasi **Bantu.In**:
 
-<img src="path/to/mockup.png" alt="Mockup Bantu.In" width="800">
+<p align="center">
+  <img src="assets/Mockup-BantuIn.Png" alt="Mockup Bantu.In" width="700">
+</p>
 
 ---
 
