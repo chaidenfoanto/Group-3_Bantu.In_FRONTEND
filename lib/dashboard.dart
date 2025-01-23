@@ -3,6 +3,9 @@ import 'package:front_end/booking.dart';
 import 'package:front_end/widgets/navbar.dart' as navbar;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -13,6 +16,8 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardState extends State<DashboardScreen> {
   late YoutubePlayerController _youtubeController;
+  String userName = '';
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -27,6 +32,53 @@ class _DashboardState extends State<DashboardScreen> {
         enableCaption: true,
       ),
     );
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
+      
+      if (token == null) {
+        // Handle case when token is not found
+        Navigator.of(context).pushReplacementNamed('/login');
+        return;
+      }
+
+      final response = await http.get(
+        Uri.parse('http://192.168.205.50:8000/api/user-dashboard'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          userName = data['name'];
+          isLoading = false;
+        });
+      } else if (response.statusCode == 401) {
+        // Token is invalid or expired
+        await prefs.remove('access_token');
+        Navigator.of(context).pushReplacementNamed('/login');
+      } else {
+        setState(() {
+          userName = 'User';
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        userName = 'User';
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to fetch user data')),
+      );
+    }
   }
 
   @override
@@ -134,13 +186,21 @@ class _DashboardState extends State<DashboardScreen> {
               .titleMedium
               ?.copyWith(color: Colors.black54),
         ),
-        Text(
-          'chaidenfoanto!',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+        isLoading
+            ? const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                userName + '!',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
               ),
-        ),
       ],
     );
   }

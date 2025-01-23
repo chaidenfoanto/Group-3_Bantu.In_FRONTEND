@@ -276,34 +276,42 @@ class VideoCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Stack(
-              children: [
-                Container(
-                  height: 180,
-                  decoration: const BoxDecoration(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(16)),
-                  ),
-                  child: ClipRRect(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(16)),
+            // Container untuk menampung gambar dan ikon play
+            Container(
+              height: 180, // Atur tinggi sesuai kebutuhan
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
+              ),
+              child: Stack(
+                children: [
+                  // Gambar thumbnail YouTube
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
                     child: Image.network(
                       'https://img.youtube.com/vi/$videoId/0.jpg',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.cover, // Menyesuaikan gambar dengan container
+                      width: double.infinity, // Lebar menyesuaikan container
+                      height: 180, // Tinggi sesuai container
                     ),
                   ),
-                ),
-                Positioned.fill(
-                  child: Center(
-                    child: const Icon(
-                      Icons.play_circle_outline,
-                      size: 64,
-                      color: Colors.white,
+                  // Ikon play di tengah gambar
+                  Positioned.fill(
+                    child: Center(
+                      child: Icon(
+                        Icons.play_circle_outline,
+                        size: 64,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            // Container untuk teks judul
             Container(
               color: Colors.grey[800],
               padding: const EdgeInsets.all(8.0),
