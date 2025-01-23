@@ -37,7 +37,7 @@ Berikut adalah fitur-fitur unggulan yang ditawarkan oleh **Bantu.In**:
 Berikut adalah cuplikan antarmuka aplikasi **Bantu.In**:
 
 <p align="center">
-  <img src="assets/Mockup-BantuIn.Png" alt="Mockup Bantu.In" width="700">
+  <img src="assets/Mockup-BantuIn.png" alt="Mockup Bantu.In" width="700">
 </p>
 
 ---
