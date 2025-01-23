@@ -84,7 +84,7 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan proyek secara lokal:
 1. **Clone repositori ini**:
    ```bash
    git clone https://github.com/chaidenfoanto/Group-3_Bantu.In_FRONTEND.git
-  ```
+   ```
 
 2. **Masuk ke direktori proyek**:
   ```bash
