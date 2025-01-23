@@ -41,15 +41,15 @@ class _EducationPageState extends State<EducationScreen> {
       ],
       'isExpanded': false,
     },
-    {
-      'title': 'Mengapa AC Anda cepat kotor?',
-      'details': [
-        'Filter udara yang jarang dibersihkan.',
-        'Lingkungan sekitar yang berdebu.',
-        'Kurangnya perawatan rutin pada AC.'
-      ],
-      'isExpanded': false,
-    },
+    // {
+    //   'title': 'Mengapa AC Anda cepat kotor?',
+    //   'details': [
+    //     'Filter udara yang jarang dibersihkan.',
+    //     'Lingkungan sekitar yang berdebu.',
+    //     'Kurangnya perawatan rutin pada AC.'
+    //   ],
+    //   'isExpanded': false,
+    // },
     {
       'title': 'Pentingnya Membersihkan Filter Udara pada AC',
       'details': [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/booking.dart';
+import 'package:front_end/education.dart';
 import 'package:front_end/widgets/navbar.dart' as navbar;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -328,7 +329,12 @@ class _DashboardState extends State<DashboardScreen> {
                   ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => const EducationScreen()),
+                    );
+              },
               icon: const Icon(Icons.arrow_forward),
             ),
           ],
