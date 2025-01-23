@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shared_preferences/shared_preferences.dart'; 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:front_end/login.dart';
@@ -202,32 +202,80 @@ class _OnboardingItem extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20),
               child: ElevatedButton(
                 onPressed: () async {
-                  // Memeriksa dan meminta izin lokasi
-                  LocationPermission permission = await Geolocator.checkPermission();
-                  if (permission == LocationPermission.denied) {
-                    permission = await Geolocator.requestPermission();
-                    if (permission == LocationPermission.denied) {
+                  try {
+                    // Periksa apakah layanan lokasi aktif
+                    bool isLocationServiceEnabled =
+                        await Geolocator.isLocationServiceEnabled();
+                    if (!isLocationServiceEnabled) {
+                      // Jika layanan lokasi tidak aktif, minta pengguna menyalakannya
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Location permission is required to continue")),
+                        const SnackBar(
+                          content: Text(
+                              "Layanan lokasi tidak aktif. Harap nyalakan GPS."),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
+
+                      // Buka pengaturan lokasi
+                      await Geolocator.openLocationSettings();
+                      return;
+                    }
+
+                    // Periksa status izin lokasi
+                    LocationPermission permission =
+                        await Geolocator.checkPermission();
+                    if (permission == LocationPermission.denied) {
+                      permission = await Geolocator.requestPermission();
+                      if (permission == LocationPermission.denied) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                "Izin lokasi diperlukan untuk melanjutkan."),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                        return;
+                      }
+                    }
+
+                    if (permission == LocationPermission.deniedForever) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              "Izin lokasi ditolak permanen. Silakan atur di pengaturan."),
+                          duration: Duration(seconds: 3),
+                        ),
                       );
                       return;
                     }
+
+                    // Mendapatkan lokasi pengguna
+                    Position position = await Geolocator.getCurrentPosition(
+                      desiredAccuracy: LocationAccuracy.high,
+                    );
+                    print(
+                        "Lokasi user: ${position.latitude}, ${position.longitude}");
+
+                    // Simpan lokasi ke SharedPreferences
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setDouble('latitude', position.latitude);
+                    await prefs.setDouble('longitude', position.longitude);
+
+                    // Navigasi ke halaman login
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                    );
+                  } catch (e) {
+                    // Tangani error jika ada
+                    print("Error lokasi: $e");
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Gagal mendapatkan lokasi: $e"),
+                        duration: const Duration(seconds: 3),
+                      ),
+                    );
                   }
-
-                  // Mendapatkan lokasi terkini
-                  Position position = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.high,
-                  );
-
-                  // Menyimpan lokasi awal ke SharedPreferences
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setDouble('latitude', position.latitude);
-                  await prefs.setDouble('longitude', position.longitude);
-
-                  // Navigasi ke halaman login
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFECE2E),

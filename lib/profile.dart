@@ -184,7 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.205.50:8000/api/logoutuser'); // Sesuaikan URL
+    final url = Uri.parse('http://192.168.205.117:8000/api/logoutuser'); // Sesuaikan URL
     try {
       final response = await http.post(
         url,

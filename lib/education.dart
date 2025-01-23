@@ -104,47 +104,63 @@ class _EducationPageState extends State<EducationScreen> {
     return navbar.BottomNavBar(
       currentIndex: 2, // Education tab index
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Education',
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.white,
-          iconTheme: const IconThemeData(color: Colors.black),
-          elevation: 5,
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1.0),
-            child: Container(
-              color: Colors.grey[300],
-              height: 1.0,
+        body: Column(
+          // Perbaikan di sini
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Education',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(
+                      height: 8), // Jarak antara teks "Education" dan Divider
+                  const Divider(
+                    thickness: 1,
+                    color: Colors.black38,
+                  ), // Tambahkan jarak antara Divider dan tab
+                ],
+              ),
             ),
-          ),
-        ),
-        body: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+            // Konten utama
+            Expanded(
+              child: Container(
+                color: Colors.white,
+                child: Column(
                   children: [
-                    GestureDetector(
-                      onTap: () => setState(() => showVideos = true),
-                      child: TabButton(label: 'Videos', isSelected: showVideos),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () => setState(() => showVideos = true),
+                            child: TabButton(
+                                label: 'Videos', isSelected: showVideos),
+                          ),
+                          GestureDetector(
+                            onTap: () => setState(() => showVideos = false),
+                            child: TabButton(
+                                label: 'Facts', isSelected: !showVideos),
+                          ),
+                        ],
+                      ),
                     ),
-                    GestureDetector(
-                      onTap: () => setState(() => showVideos = false),
-                      child: TabButton(label: 'Facts', isSelected: !showVideos),
+                    Expanded(
+                      child: showVideos ? _buildVideosTab() : _buildFactsTab(),
                     ),
                   ],
                 ),
               ),
-              Expanded(
-                child: showVideos ? _buildVideosTab() : _buildFactsTab(),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -237,7 +253,7 @@ class TabButton extends StatelessWidget {
       height: 30,
       margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
-        color: isSelected ? Colors.yellow[700] : Colors.grey[300],
+        color: isSelected ? const Color(0xFFFECE2E) : Colors.grey[300],
         borderRadius: BorderRadius.circular(16),
       ),
       child: Center(
