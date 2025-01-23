@@ -285,9 +285,9 @@
     },
     {
       "name": "http",
-      "rootUri": "file:///Users/chaidenfoanto/.pub-cache/hosted/pub.dev/http-1.2.2",
+      "rootUri": "file:///Users/chaidenfoanto/.pub-cache/hosted/pub.dev/http-1.3.0",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.4"
     },
     {
       "name": "http_parser",
@@ -704,7 +704,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-01-16T04:53:21.692413Z",
+  "generated": "2025-01-23T06:15:33.691232Z",
   "generator": "pub",
   "generatorVersion": "3.5.4",
   "flutterRoot": "file:///Users/chaidenfoanto/Downloads/flutter",
