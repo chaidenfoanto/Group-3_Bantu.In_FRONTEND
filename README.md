@@ -87,19 +87,19 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan proyek secara lokal:
    ```
 
 2. **Masuk ke direktori proyek**:
-  ```bash
-  cd Group-3_Bantu.In_FRONTEND
-  ```
+    ```bash
+    cd Group-3_Bantu.In_FRONTEND
+    ```
 
 3. **Pasang dependensi proyek**:
-  ```bash
-  flutter pub get
-  ```
+    ```bash
+    flutter pub get
+    ```
 
 4. **Jalankan aplikasi di emulator atau perangkat fisik**:
-  ```bash
-  flutter run
-  ```
+    ```bash
+    flutter run
+    ```
 
 ---
 
