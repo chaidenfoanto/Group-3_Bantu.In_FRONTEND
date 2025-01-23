@@ -37,7 +37,7 @@ Berikut adalah fitur-fitur unggulan yang ditawarkan oleh **Bantu.In**:
 Berikut adalah cuplikan antarmuka aplikasi **Bantu.In**:
 
 <p align="center">
-  <img src="assets/Mockup-BantuIn.Png" alt="Mockup Bantu.In" width="700">
+  <img src="assets/Mockup-BantuIn.png" alt="Mockup Bantu.In" width="700">
 </p>
 
 ---
@@ -84,22 +84,22 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan proyek secara lokal:
 1. **Clone repositori ini**:
    ```bash
    git clone https://github.com/chaidenfoanto/Group-3_Bantu.In_FRONTEND.git
-  ```
+   ```
 
 2. **Masuk ke direktori proyek**:
-  ```bash
-  cd Group-3_Bantu.In_FRONTEND
-  ```
+    ```bash
+    cd Group-3_Bantu.In_FRONTEND
+    ```
 
 3. **Pasang dependensi proyek**:
-  ```bash
-  flutter pub get
-  ```
+    ```bash
+    flutter pub get
+    ```
 
 4. **Jalankan aplikasi di emulator atau perangkat fisik**:
-  ```bash
-  flutter run
-  ```
+    ```bash
+    flutter run
+    ```
 
 ---
 
