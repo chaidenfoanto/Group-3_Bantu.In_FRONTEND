@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:front_end/widgets/service_options.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart' show kIsWeb; // For kIsWeb
+import 'package:flutter/foundation.dart' show kIsWeb; 
 import 'dart:io'; // For File
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -20,7 +21,7 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen>
     with SingleTickerProviderStateMixin {
   LatLng markerPosition = const LatLng(-5.150, 119.396);
-  String hintText = "Perumahan Purakucing, Jalan Johar...";
+  String hintText = "Type your Location...";
   late TabController _tabController;
   String selectedService = '';
   final PanelController _panelController = PanelController();
@@ -28,6 +29,8 @@ class _BookingScreenState extends State<BookingScreen>
   final ImagePicker _picker = ImagePicker();
   List<XFile>? _images = [];
   List<XFile>? _videos = [];
+  DateTime? selectedDate;
+  String? selectedTimeSlot;
 
   @override
   void initState() {
@@ -75,6 +78,27 @@ class _BookingScreenState extends State<BookingScreen>
         });
       }
     }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(DateTime.now().year + 1),
+    );
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+      });
+    }
+  }
+
+  // Fungsi untuk memilih jam
+  void _selectTimeSlot(String timeSlot) {
+    setState(() {
+      selectedTimeSlot = selectedTimeSlot == timeSlot ? null : timeSlot;
+    });
   }
 
   @override
@@ -247,23 +271,6 @@ class _BookingScreenState extends State<BookingScreen>
   }
 
   Widget _buildBookFirstContent(ThemeData theme) {
-    DateTime? selectedDate;
-    String? selectedTimeSlot;
-
-    Future<void> _selectDate(BuildContext context) async {
-      final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 1),
-      );
-      if (picked != null && picked != selectedDate) {
-        setState(() {
-          selectedDate = picked;
-        });
-      }
-    }
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -308,71 +315,97 @@ class _BookingScreenState extends State<BookingScreen>
                   .copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () => _selectDate(context),
-              icon: const Icon(
-                Icons.calendar_month_outlined,
-                color: Colors.black,
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              width: double.infinity, // Membuat lebar Container memenuhi layar
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: Colors.grey.shade300), // Garis di sekeliling
+                borderRadius: BorderRadius.circular(10), // Sudut membulat
               ),
-              label: Text(
-                selectedDate != null
-                    ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-                    : "Choose a Date",
-                style: theme.textTheme.bodySmall,
-              ),
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                backgroundColor: Colors.white,
-                side: const BorderSide(color: Colors.black, width: 1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                "08:00 - 10:00",
-                "10:00 - 12:00",
-                "12:00 - 14:00",
-                "14:00 - 16:00",
-                "16:00 - 18:00",
-                "18:00 - 20:00",
-                "20:00 - 22:00",
-                "22:00 - 24:00",
-              ].map((timeSlot) {
-                return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Tombol DatePicker
+                  ElevatedButton.icon(
+                    onPressed: () => _selectDate(context),
+                    icon: const Icon(
+                      Icons.calendar_month_outlined,
+                      color: Colors.black,
                     ),
-                    backgroundColor: selectedTimeSlot == timeSlot
-                        ? Colors.blue
-                        : Colors.white,
-                    side: BorderSide(
-                        color: selectedTimeSlot == timeSlot
-                            ? Colors.blue
-                            : Colors.grey.shade300),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      selectedTimeSlot = timeSlot;
-                    });
-                  },
-                  child: Text(
-                    timeSlot,
-                    style: theme.textTheme.bodyMedium!.copyWith(
-                      color: selectedTimeSlot == timeSlot
-                          ? Colors.white
-                          : Colors.black,
+                    label: Text(
+                      selectedDate == null
+                          ? "Choose a Date"
+                          : "${selectedDate!.toLocal()}".split(' ')[0],
+                      style: theme.textTheme.bodySmall,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: Colors.white,
+                      side: const BorderSide(color: Colors.black, width: 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 16),
                     ),
                   ),
-                );
-              }).toList(),
+                  GridView.builder(
+                    itemCount: 8,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      childAspectRatio: 4.0,
+                    ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final timeSlots = [
+                        "08:00 - 10:00",
+                        "10:00 - 12:00",
+                        "12:00 - 14:00",
+                        "14:00 - 16:00",
+                        "16:00 - 18:00",
+                        "18:00 - 20:00",
+                        "20:00 - 22:00",
+                        "22:00 - 24:00",
+                      ];
+                      final timeSlot = timeSlots[index];
+                      return SizedBox(
+                        height: 30, 
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            backgroundColor: selectedTimeSlot == timeSlot
+                                ? const Color(0xFFFECE2E)
+                                : Colors.white,
+                            side: BorderSide(
+                              color: selectedTimeSlot == timeSlot
+                                  ? const Color(0xFFFECE2E)
+                                  : Colors.grey.shade300,
+                            ),
+                            padding: EdgeInsets
+                                .zero, 
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedTimeSlot = timeSlot;
+                            });
+                          },
+                          child: Text(
+                            timeSlot,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 32),
             Center(
@@ -561,25 +594,6 @@ class _BookingScreenState extends State<BookingScreen>
           ],
         ),
       ],
-    );
-  }
-}
-
-// Define the ServiceOptions widget
-class ServiceOptions extends StatelessWidget {
-  final String selectedService;
-  final Function(String) onServiceSelected;
-
-  const ServiceOptions({
-    required this.selectedService,
-    required this.onServiceSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // Implement your service options UI here
-    return Container(
-      child: Text("Service Options Placeholder"),
     );
   }
 }

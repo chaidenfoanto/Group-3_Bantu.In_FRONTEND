@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.205.50:8000/api/user-profile'); // Sesuaikan URL
+    final url = Uri.parse('http://192.168.205.117:8000/api/user-profile'); // Sesuaikan URL
     try {
       final response = await http.get(
         url,
@@ -109,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.205.50:8000/api/updatefotouser'); // Sesuaikan URL
+    final url = Uri.parse('http://192.168.205.117:8000/api/updatefotouser'); // Sesuaikan URL
 
     try {
       var request = http.MultipartRequest('PATCH', url);
@@ -425,7 +425,7 @@ class _ProfilePageState extends State<ProfilePage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.phone, color: Colors.black),
+              leading: const Icon(Icons.exit_to_app_outlined, color: Colors.black),
               title: Text(
                 "Log out",
                 style: theme.textTheme.bodyLarge?.copyWith(
