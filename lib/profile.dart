@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.205.117:8000/api/user-profile'); // Sesuaikan URL
+    final url = Uri.parse('http://127.0.0.1:8000/api/user-profile'); // Sesuaikan URL
     try {
       final response = await http.get(
         url,
@@ -109,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.205.117:8000/api/updatefotouser'); // Sesuaikan URL
+    final url = Uri.parse('http://127.0.0.1:8000/api/updatefotouser'); // Sesuaikan URL
 
     try {
       var request = http.MultipartRequest('PATCH', url);
@@ -184,7 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.205.117:8000/api/logoutuser'); // Sesuaikan URL
+    final url = Uri.parse('http://127.0.0.1:8000/api/logoutuser'); // Sesuaikan URL
     try {
       final response = await http.post(
         url,

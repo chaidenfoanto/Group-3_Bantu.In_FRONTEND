@@ -51,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
         // Make API call
         final response = await http.post(
-          Uri.parse('http://192.168.205.117:8000/api/regists'), // Adjust URL as needed
+          Uri.parse('http://127.0.0.1:8000/api/regists'), // Adjust URL as needed
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             'name': _nameController.text,

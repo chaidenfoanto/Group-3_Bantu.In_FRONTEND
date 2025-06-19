@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.205.117:8000/api/login'); // Sesuaikan URL
+    final url = Uri.parse('http://127.0.0.1:8000/api/login'); // Sesuaikan URL
     try {
       final response = await http.post(
         url,
